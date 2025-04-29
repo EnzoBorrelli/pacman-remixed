@@ -1,0 +1,9 @@
+export const SCENES = {
+    MAIN: "MAIN",
+    SETTINGS: "SETTINGS",
+    EXTRAS: "EXTRAS",
+    CREDITS: "CREDITS",
+    GAME_OVER: "GAME_OVER",
+    GAME_WON: "GAME_WON",
+    LEVEL_256_REACHED: "LEVEL_256_REACHED",
+    };
