@@ -2,11 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body {
-  @apply bg-white dark:bg-gray-950;
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
+@font-face {
+  font-family: 'PacFont';
+  src: url('/fonts/pacFont.ttf') format('truetype');
+}
+
+:root {
+  font-family: 'PacFont', sans-serif;
+}
+
+.text-stroke-2 {
+  text-shadow: -1px -1px 0 rgb(175, 175, 175), 1px -1px 0 rgb(175, 175, 175), -1px 1px 0 rgb(175, 175, 175), 1px 1px 0 rgb(175, 175, 175);
+}
+.text-stroke-1 {
+  text-shadow: -1px -1px 0 rgb(92, 25, 150), 1px -1px 0 rgb(92, 25, 150), -1px 1px 0 rgb(92, 25, 150), 1px 1px 0 rgb(92, 25, 150);
+}
+.text-stroke-3 {
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
 }
