@@ -11,12 +11,19 @@ export const GAME_STATUS = {
   OVER: "OVER",
 };
 
-export const MAP_CHARACTER_SPAWNS = {
+export const SIZES = {
+  CHARACTER:32,
+  TILE: 16,
+  MAP: { WIDTH: 448, HEIGHT: 496 },
+}
+
+export const CHAR_SPAWNS = {
   PACMAN: { x: 1, y: 1 },
   BLINKY: { x: 1, y: 1 },
   PINKY: { x: 1, y: 1 },
   INKY: { x: 1, y: 1 },
   CLYDE: { x: 1, y: 1 },
+  FRUIT:{ x: 208, y: 272 },
 };
 
 export const PACMAN_STATES = {
