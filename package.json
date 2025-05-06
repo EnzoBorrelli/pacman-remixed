@@ -11,12 +11,14 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@pixi/react": "^7.1.2",
     "@reduxjs/toolkit": "^2.7.0",
     "@remix-run/node": "^2.16.5",
     "@remix-run/react": "^2.16.5",
     "@remix-run/serve": "^2.16.5",
     "howler": "^2.2.4",
     "isbot": "^4.1.0",
+    "pixi.js": "^7.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.2.0"
@@ -24,6 +26,7 @@
   "devDependencies": {
     "@remix-run/dev": "^2.16.5",
     "@types/howler": "^2.2.12",
+    "@types/pixi.js": "^4.8.9",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
