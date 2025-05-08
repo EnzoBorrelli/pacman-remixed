@@ -5,7 +5,7 @@ const initialState : iGameState = {
     gameStarted: false,
     gameOver: false,
     score: 0,
-    level: 1,
+    level: 0,
     lives: 3,    
 };
 
