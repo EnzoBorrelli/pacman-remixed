@@ -11,3 +11,11 @@ export interface iFruit{
     type: number;
     isEaten?: boolean;
 }
+
+export interface iPacman{
+    x: number;
+    y: number;
+    state: string;
+    direction: string;
+    
+}
