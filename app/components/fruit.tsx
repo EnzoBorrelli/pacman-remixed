@@ -21,7 +21,7 @@ export default function Fruit({ x, y, type, isEaten }: iFruit) {
       y={y}
       width={SIZES.CHARACTER}
       height={SIZES.CHARACTER}
-      anchor={0.25}
+      anchor={{ x: 0, y: 0.25 }}
       alpha={isEaten ? 0 : 1}
     />
   );
