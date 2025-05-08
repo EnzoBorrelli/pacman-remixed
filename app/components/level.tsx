@@ -6,11 +6,8 @@ import { PELLETS_MAP } from "~/consts/map";
 import Pellet from "./pellet";
 import { CHAR_SPAWNS, SIZES } from "~/consts/game";
 import Fruit from "./fruit";
-import { useSelector } from "react-redux";
-import { RootState } from "~/store";
 
-export default function Level() {
-  const level = useSelector((state: RootState) => state.game.level);
+export default function Level({level}: { level: number }) {
   const [pellets, setPellets] = useState<iPellet[]>([]);
 
   const fruitType = level > 7 ? 7 : level;

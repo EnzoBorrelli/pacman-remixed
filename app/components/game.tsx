@@ -1,8 +1,12 @@
 import { Stage } from "@pixi/react";
 import Level from "./level";
-import { SIZES } from "~/consts/game";
+import { CHAR_SPAWNS, DIRECTIONS, SIZES } from "~/consts/game";
+import { useSelector } from "react-redux";
+import { RootState } from "~/store";
+import Pacman from "./pacman";
 
 export default function Game() {
+  const game = useSelector((state: RootState) => state.game);
   return (
     <Stage
       width={SIZES.MAP.WIDTH}
@@ -13,7 +17,8 @@ export default function Game() {
         autoDensity: true,
       }}
     >
-      <Level/>
+      <Level level={game.level}/>
+      <Pacman x={CHAR_SPAWNS.PACMAN.x} y={CHAR_SPAWNS.PACMAN.y} state="1" direction={DIRECTIONS.LEFT}/>
     </Stage>
   );
 }
