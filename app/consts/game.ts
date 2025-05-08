@@ -18,7 +18,7 @@ export const SIZES = {
 }
 
 export const CHAR_SPAWNS = {
-  PACMAN: { x: 1, y: 1 },
+  PACMAN: { x: 208, y: 368},
   BLINKY: { x: 1, y: 1 },
   PINKY: { x: 1, y: 1 },
   INKY: { x: 1, y: 1 },
