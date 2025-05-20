@@ -19,6 +19,20 @@ function getDirectionCol(direction: string): number {
       return 0;
   }
 }
+function getDeadCol(direction: string): number {
+  switch (direction) {
+    case "DOWN":
+      return 0;
+    case "LEFT":
+      return 1;
+    case "RIGHT":
+      return 2;
+    case "UP":
+      return 3;
+    default:
+      return 0;
+  }
+}
 function getGhostRow(name: string): number {
   switch (name) {
     case "blinky":
@@ -34,7 +48,7 @@ function getGhostRow(name: string): number {
   }
 }
 
-export default function Ghost({ x, y, state, direction,name }: iGhost) {
+export default function Ghost({ x, y, state, direction, name }: iGhost) {
   const [textures, setTextures] = useState<Texture[]>([]);
   const spriteRef = useRef<any>(null);
 
@@ -44,9 +58,24 @@ export default function Ghost({ x, y, state, direction,name }: iGhost) {
       const frameTextures: Texture[] = [];
 
       if (state === GHOST_STATES.DEAD) {
-        const row = 0;
-        const frameCount = 10;
-        for (let i = 0; i < frameCount; i++) {
+        const row = 4;
+        const col = getDeadCol(direction);
+        frameTextures.push(
+          new Texture(
+            baseTexture,
+            new Rectangle(
+              col * SIZES.CHARACTER,
+              row * SIZES.CHARACTER,
+              SIZES.CHARACTER,
+              SIZES.CHARACTER
+            )
+          )
+        );
+      } else if (
+        state === GHOST_STATES.FRIGHTENED
+      ) {
+        let row = 4;
+        for (let i = 4; i < 6; i++) {
           frameTextures.push(
             new Texture(
               baseTexture,
@@ -59,23 +88,26 @@ export default function Ghost({ x, y, state, direction,name }: iGhost) {
             )
           );
         }
-      /*} else if (state === PACMAN_STATES.IDLE) {
-        let row = getDirectionRow(direction);
-        frameTextures.push(
-          new Texture(
-            baseTexture,
-            new Rectangle(
-              0,
-              row * SIZES.CHARACTER,
-              SIZES.CHARACTER,
-              SIZES.CHARACTER
+      }else if( state === GHOST_STATES.RESTORING){
+        let row = 4;
+        for (let i = 4; i < 8; i++) {
+          frameTextures.push(
+            new Texture(
+              baseTexture,
+              new Rectangle(
+                i * SIZES.CHARACTER,
+                row * SIZES.CHARACTER,
+                SIZES.CHARACTER,
+                SIZES.CHARACTER
+              )
             )
-          )
-        );*/
+          );
+        }
+
       } else {
         let col = getDirectionCol(direction);
         let row = getGhostRow(name!);
-        for (let i = col; i < col+2; i++) {
+        for (let i = col; i < col + 2; i++) {
           frameTextures.push(
             new Texture(
               baseTexture,
@@ -106,11 +138,11 @@ export default function Ghost({ x, y, state, direction,name }: iGhost) {
 
   return (
     <AnimatedSprite
-    ref={spriteRef}
+      ref={spriteRef}
       textures={textures}
       x={x}
       y={y}
-      isPlaying={true}
+      isPlaying={state !== GHOST_STATES.DEAD}
       animationSpeed={0.1}
       anchor={{ x: 0, y: 0.25 }}
     />
