@@ -1,7 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 import Game from "~/components/game";
-import GhostDebugger from "~/utils/debug/ghostDebugger";
-import PacmanDebugger from "~/utils/debug/pacmanDebugger";
+import Debuggers from "~/utils/Debuggers";
 
 export const meta: MetaFunction = () => {
   return [
@@ -12,10 +11,9 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <main className="relative flex h-screen items-center justify-center bg-slate-950 text-white">
+    <main className="relative flex items-center justify-center h-screen text-white bg-slate-950">
       <Game/>
-      <PacmanDebugger/>
-      <GhostDebugger/>
+      <Debuggers debugMode={true}/>
     </main>
   );
 }
