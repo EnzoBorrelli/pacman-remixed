@@ -39,5 +39,5 @@ const gameSlice = createSlice({
     },
 });
 
-export const { startGame, endGame, increaseScore, nextLevel, loseLife } = gameSlice.actions;
+export const GameActions = gameSlice.actions;
 export default gameSlice.reducer;
