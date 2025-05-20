@@ -3,7 +3,8 @@ export interface iGameState {
     gameOver: boolean;
     score: number;
     level: number;
-    lives: number;    
+    lives: number; 
+    fruits:number[];   
     }
 
 export interface iPacman {
