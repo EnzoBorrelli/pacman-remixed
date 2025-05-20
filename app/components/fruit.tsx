@@ -1,6 +1,6 @@
 import { Sprite } from "@pixi/react";
 import { BaseTexture, Rectangle, Texture } from "pixi.js";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { SIZES } from "~/consts/game";
 import { iFruit } from "~/interfaces/components";
 
