@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { iGhost } from "~/interfaces/slices"
 
 
@@ -24,11 +24,11 @@ const createGhostSlice = (name: string,spawn_x:number,spawn_y:number,spawn_direc
                 state.x = action.payload.x;
                 state.y = action.payload.y;
             },
-            setState: (state, action) => {
-                state.state = action.payload.state;
+            setState: (state, action:PayloadAction<string>) => {
+                state.state = action.payload;
             },
-            setDirection: (state, action) => {
-                state.direction = action.payload.direction;
+            setDirection: (state, action:PayloadAction<string>) => {
+                state.direction = action.payload;
             },
         },
     });
