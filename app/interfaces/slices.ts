@@ -2,6 +2,7 @@ export interface iGameState {
     gameStarted: boolean;
     gameOver: boolean;
     score: number;
+    highScore:number;
     level: number;
     lives: number; 
     fruits:number[];   
