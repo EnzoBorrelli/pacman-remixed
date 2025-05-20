@@ -19,28 +19,26 @@ export const SIZES = {
 
 export const CHAR_SPAWNS = {
   PACMAN: { x: 208, y: 368},
-  BLINKY: { x: 1, y: 1 },
-  PINKY: { x: 1, y: 1 },
-  INKY: { x: 1, y: 1 },
-  CLYDE: { x: 1, y: 1 },
+  BLINKY: { x: 208, y: 174 },
+  PINKY: { x: 208, y: 222 },
+  INKY: { x: 176, y: 222 },
+  CLYDE: { x: 240, y: 222 },
   FRUIT:{ x: 208, y: 272 },
 };
 
 export const PACMAN_STATES = {
   IDLE: "IDLE",
   MOVING: "MOVING",
-  EATING: "EATING",
   DYING: "DYING",
-  EATING_GHOST: "EATING_GHOST",
-  EATING_FRUIT: "EATING_FRUIT",
-  EATING_POWER_PELLET: "EATING_POWER_PELLET",
+  EATING_GHOST: "EAT_GHOST",
+  EATING_POWER_PELLET: "EAT_POWER_PELLET",
 };
 
 export const GHOST_STATES = {
   IDLE: "IDLE",
   MOVING: "MOVING",
-  EATING: "EATING",
   FRIGHTENED: "FRIGHTENED",
+  RESTORING: "RESTORING",
   DEAD: "DEAD",
   EATING_PACMAN: "EATING_PACMAN",
 };
