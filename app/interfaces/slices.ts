@@ -5,3 +5,19 @@ export interface iGameState {
     level: number;
     lives: number;    
     }
+
+export interface iPacman {
+    x: number;
+    y: number;
+    state: string;
+    direction: string;
+}
+
+
+export interface iGhost {
+    x: number;
+    y: number;
+    state: string;
+    direction: string;
+    name?: string;
+}
