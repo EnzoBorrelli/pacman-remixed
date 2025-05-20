@@ -1,6 +1,8 @@
 import type { MetaFunction } from "@remix-run/node";
 import Game from "~/components/game";
-import Debuggers from "~/utils/Debuggers";
+import UIBottom from "~/ui/level_ui/ui_bottom";
+import UITop from "~/ui/level_ui/ui_top";
+import Debuggers from "~/utils/debuggers";
 
 export const meta: MetaFunction = () => {
   return [
@@ -11,8 +13,10 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <main className="relative flex items-center justify-center h-screen text-white bg-slate-950">
+    <main className="relative flex flex-col items-center justify-center h-screen text-white bg-slate-950">
+      <UITop/>
       <Game/>
+      <UIBottom/>
       <Debuggers debugMode={true}/>
     </main>
   );
