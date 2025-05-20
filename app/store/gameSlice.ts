@@ -6,7 +6,8 @@ const initialState : iGameState = {
     gameOver: false,
     score: 0,
     level: 0,
-    lives: 3,    
+    lives: 3,  
+    fruits: [],  
 };
 
 const gameSlice = createSlice({
@@ -16,13 +17,14 @@ const gameSlice = createSlice({
         startGame: (state) => {
             state.gameStarted = true;
             state.gameOver = false;
-            state.score = 0;
-            state.level = 1;
-            state.lives = 3;
         },
         endGame: (state) => {
             state.gameStarted = false;
             state.gameOver = true;
+            state.score = 0;
+            state.level = 0;
+            state.lives = 3;
+            state.fruits = [];
         },
         increaseScore: (state, action: PayloadAction<number>) => {
             state.score += action.payload;
