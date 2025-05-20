@@ -1,6 +1,6 @@
 import { Stage } from "@pixi/react";
 import Level from "./level";
-import { CHAR_SPAWNS, DIRECTIONS, SIZES } from "~/consts/game";
+import { SIZES } from "~/consts/game";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "~/store";
 import Pacman from "./pacman";
