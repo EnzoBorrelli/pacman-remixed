@@ -96,7 +96,7 @@ export default function Pacman({ x, y, state, direction }: iPacman) {
       x={x}
       y={y}
       isPlaying={state !== PACMAN_STATES.IDLE}
-      animationSpeed={0.1}
+      animationSpeed={state === PACMAN_STATES.EATING_POWER_PELLET ? 0.2 : 0.1}
       loop={state !== PACMAN_STATES.DYING}
       anchor={{ x: 0, y: 0.25 }}
     />
