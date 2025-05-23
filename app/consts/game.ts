@@ -3,7 +3,7 @@ export const DIRECTIONS = {
   DOWN: "DOWN",
   LEFT: "LEFT",
   RIGHT: "RIGHT",
-  NONE: "NONE",
+  NONE: undefined,
 };
 export const GAME_STATUS = {
   STARTED: "STARTED",
