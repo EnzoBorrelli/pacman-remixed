@@ -14,7 +14,7 @@ const createGhostSlice = (name: string,spawn_x:number,spawn_y:number,spawn_direc
         name: name,
         initialState,
         reducers: {
-            startingState: (state) => {
+            reset: (state) => {
                 state.x = spawn_x;
                 state.y = spawn_y;
                 state.state = "IDLE";
