@@ -17,7 +17,7 @@ export default function UIBottom() {
         autoDensity: true,
       }}
     >
-      <FruitArray fruitArray={[0, 1, 2, 3, 4, 5, 6, 7]} />
+      <FruitArray fruitArray={game.fruits} />
       <Lives lives={game.lives} />
       <Text/>
     </Stage>
