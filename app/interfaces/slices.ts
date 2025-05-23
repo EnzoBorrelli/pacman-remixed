@@ -1,6 +1,5 @@
 export interface iGameState {
-    gameStarted: boolean;
-    gameOver: boolean;
+    status:string
     score: number;
     highScore:number;
     level: number;
@@ -13,6 +12,8 @@ export interface iPacman {
     y: number;
     state: string;
     direction: string;
+    eatenCombo?: string[];
+    eatenPellets?: number;
 }
 
 
