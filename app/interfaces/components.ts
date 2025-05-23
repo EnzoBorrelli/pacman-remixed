@@ -12,10 +12,9 @@ export interface iFruit{
     isEaten?: boolean;
 }
 
-export interface iPacman{
+export interface iEatScoreDisplay{
     x: number;
     y: number;
-    state: string;
-    direction: string;
-    
+    isVisible: boolean;
+    score: number;
 }
