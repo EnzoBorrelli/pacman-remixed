@@ -85,6 +85,12 @@ export default function PacmanDebugger() {
         <li>Y: {pacman.y}</li>
         <li>dir: {pacman.direction}</li>
       </ul>
+      <button
+          onClick={() => dispatch(PacmanActions.reset())}
+          className="py-1 bg-slate-600 ring-1 ring-slate-400 hover:bg-red-600 hover:ring-red-200 hover:text-white hover:cursor-pointer"
+        >
+          Reset Pacman
+        </button>
     </article>
   );
 }
