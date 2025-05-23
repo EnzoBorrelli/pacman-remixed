@@ -1,17 +1,25 @@
-import { Stage } from "@pixi/react";
+import { Stage} from "@pixi/react";
 import Level from "./level";
-import { SIZES } from "~/consts/game";
+import { GAME_STATUS, SIZES } from "~/consts/game";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "~/store";
-import Pacman from "./pacman";
 import { useEffect } from "react";
 import { PacmanActions } from "~/store/pacmanSlice";
 import Ghost from "./ghost";
+import EatScoreDisplay from "~/ui/level_ui/eatScoreDisplay";
+import {
+  BlinkyActions,
+  ClydeActions,
+  InkyActions,
+  PinkyActions,
+} from "~/store/ghostSlices";
+import Pacman from "./pacman";
+import { useMovement } from "~/scripts/pacman/useMovement";
 
 export default function Game() {
   const game = useSelector((state: RootState) => state.game);
   const pacman = useSelector((state: RootState) => state.pacman);
-  const blinky = useSelector((state: RootState) => state.blinky); 
+  const blinky = useSelector((state: RootState) => state.blinky);
   const inky = useSelector((state: RootState) => state.inky);
   const pinky = useSelector((state: RootState) => state.pinky);
   const clyde = useSelector((state: RootState) => state.clyde);
@@ -19,10 +27,19 @@ export default function Game() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (game.gameStarted) {
-      dispatch(PacmanActions.startingState());
+    if (game.status=== GAME_STATUS.STARTED) {
+      dispatch(PacmanActions.reset());
+      dispatch(BlinkyActions.reset());
+      dispatch(PinkyActions.reset());
+      dispatch(InkyActions.reset());
+      dispatch(ClydeActions.reset());
     }
-  }, []);
+  }, [game.status, dispatch]);
+  
+
+  useMovement({ state: pacman.state, x: pacman.x, y: pacman.y });
+
+  
   return (
     <Stage
       width={SIZES.MAP.WIDTH}
@@ -33,8 +50,13 @@ export default function Game() {
         autoDensity: true,
       }}
     >
-      <Level level={game.level}/>
-      <Pacman x={pacman.x} y={pacman.y} state={pacman.state} direction={pacman.direction}/>
+      <Level level={game.level} />
+      <Pacman
+        x={pacman.x}
+        y={pacman.y}
+        state={pacman.state}
+        direction={pacman.direction}
+      />
       {ghosts.map((ghost) => (
         <Ghost
           key={ghost.name}
@@ -45,6 +67,7 @@ export default function Game() {
           name={ghost.name}
         />
       ))}
+      <EatScoreDisplay x={pacman.x} y={pacman.y} score={0} isVisible={false} />
     </Stage>
   );
 }
