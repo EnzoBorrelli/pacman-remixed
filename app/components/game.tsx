@@ -1,4 +1,4 @@
-import { Stage} from "@pixi/react";
+import { Stage } from "@pixi/react";
 import Level from "./level";
 import { GAME_STATUS, SIZES } from "~/consts/game";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +15,7 @@ import {
 } from "~/store/ghostSlices";
 import Pacman from "./pacman";
 import { useMovement } from "~/scripts/pacman/useMovement";
+import { usePelletCollision } from "~/scripts/objects/pelletUtils";
 
 export default function Game() {
   const game = useSelector((state: RootState) => state.game);
@@ -27,7 +28,7 @@ export default function Game() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (game.status=== GAME_STATUS.STARTED) {
+    if (game.status === GAME_STATUS.STARTED) {
       dispatch(PacmanActions.reset());
       dispatch(BlinkyActions.reset());
       dispatch(PinkyActions.reset());
@@ -35,11 +36,10 @@ export default function Game() {
       dispatch(ClydeActions.reset());
     }
   }, [game.status, dispatch]);
-  
 
+  const currentPellets = usePelletCollision(pacman.x, pacman.y);
   useMovement({ state: pacman.state, x: pacman.x, y: pacman.y });
 
-  
   return (
     <Stage
       width={SIZES.MAP.WIDTH}
@@ -50,7 +50,7 @@ export default function Game() {
         autoDensity: true,
       }}
     >
-      <Level level={game.level} />
+      <Level level={game.level} pellets={currentPellets} />
       <Pacman
         x={pacman.x}
         y={pacman.y}
