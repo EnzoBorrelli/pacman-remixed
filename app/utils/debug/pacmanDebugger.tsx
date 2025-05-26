@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DIRECTIONS, PACMAN_STATES } from "~/consts/game";
 import { RootState } from "~/store";
+import { GameActions } from "~/store/gameSlice";
 import { PacmanActions } from "~/store/pacmanSlice";
 
 export default function PacmanDebugger() {
@@ -15,8 +16,13 @@ export default function PacmanDebugger() {
     dispatch(PacmanActions.setDirection(dir));
   }
 
+  function resetPacman() {
+    dispatch(GameActions.startGame());
+    dispatch(PacmanActions.reset());
+  }
+
   return (
-    <article className="absolute flex flex-col gap-4 p-4 rounded-lg top-10 left-10 bg-slate-800">
+    <article className="absolute flex flex-col gap-4 p-4 max-w-[350px] rounded-lg top-10 left-10 bg-slate-800">
       <h2 className="text-center text-yellow-400 uppercase">Pacman Debugger</h2>
       <h3>States</h3>
       <ul className="grid grid-cols-3 gap-2 text-xs text-center">
@@ -86,11 +92,11 @@ export default function PacmanDebugger() {
         <li>dir: {pacman.direction}</li>
       </ul>
       <button
-          onClick={() => dispatch(PacmanActions.reset())}
-          className="py-1 bg-slate-600 ring-1 ring-slate-400 hover:bg-red-600 hover:ring-red-200 hover:text-white hover:cursor-pointer"
-        >
-          Reset Pacman
-        </button>
+        onClick={resetPacman}
+        className="py-1 bg-slate-600 ring-1 ring-slate-400 hover:bg-red-600 hover:ring-red-200 hover:text-white hover:cursor-pointer"
+      >
+        Reset Pacman
+      </button>
     </article>
   );
 }
