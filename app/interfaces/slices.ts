@@ -1,3 +1,5 @@
+import { iPellet } from "./components";
+
 export interface iGameState {
     status:string
     score: number;
@@ -5,6 +7,7 @@ export interface iGameState {
     level: number;
     lives: number; 
     fruits:number[];   
+    pelletsArray: iPellet[];
     }
 
 export interface iPacman {
