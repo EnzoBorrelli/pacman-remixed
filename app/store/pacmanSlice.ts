@@ -36,8 +36,8 @@ const pacmanSlice = createSlice({
         setEatenCombo: (state, action: PayloadAction<string[]>) => {
             state.eatenCombo = action.payload;
         },
-        setEatenPellets: (state, action: PayloadAction<number>) => {
-            state.eatenPellets = action.payload;
+        setEatenPellets: (state) => {
+            state.eatenPellets = state.eatenPellets! + 1;
         },
         
     },
