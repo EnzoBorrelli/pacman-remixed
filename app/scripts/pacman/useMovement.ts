@@ -1,10 +1,9 @@
-import { useEffect } from "react";
 import { PacmanActions } from "~/store/pacmanSlice";
 import { useControls } from "./useControls";
 import { useDispatch } from "react-redux";
 import { PACMAN_STATES } from "~/consts/game";
 import { useGameloop } from "../useGameLoop";
-import { isColliding } from "~/utils/isColliding";
+import { isCollidingWithMap } from "~/utils/isColliding";
 
 export function useMovement({
   state,
@@ -15,7 +14,7 @@ export function useMovement({
   x: number;
   y: number;
 }) {
-  const speed = state === PACMAN_STATES.EATING_POWER_PELLET ? 8 : 4;
+  const speed = state === PACMAN_STATES.EATING_POWER_PELLET ? 4 : 2;
   const dispatch = useDispatch();
   const { getControlsDirection } = useControls();
 
@@ -44,18 +43,16 @@ export function useMovement({
       default:
         break;
     }
-    if (!isColliding(newX + collisionX, newY + collisionY)) {
-      console.log(`x:${newX + collisionX} | y: ${newY + collisionY}`);
+    if (!isCollidingWithMap(newX + collisionX, newY + collisionY)) {
       dispatch(PacmanActions.setCoordinates({ x: newX, y: newY }));
     }
   };
 
   useGameloop(() => {
     const direction = getControlsDirection();
-    console.log(direction);
-    if (direction) {
+    if (direction && direction !== undefined) {
       dispatch(PacmanActions.setDirection(direction));
-      dispatch(PacmanActions.setState(PACMAN_STATES.MOVING));
+     if(state !== PACMAN_STATES.EATING_POWER_PELLET) dispatch(PacmanActions.setState(PACMAN_STATES.MOVING));
       move(direction);
     } else {
       dispatch(PacmanActions.setState(PACMAN_STATES.IDLE));
