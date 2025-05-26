@@ -1,14 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GAME_STATUS } from "~/consts/game";
+import { PELLETS_MAP } from "~/consts/map";
 import { iGameState } from "~/interfaces/slices";
 
 const initialState: iGameState = {
-  status:GAME_STATUS.STARTED,
+  status: GAME_STATUS.STARTED,
   score: 0,
   highScore: 0,
   level: 0,
   lives: 3,
   fruits: [],
+  pelletsArray: [],
 };
 
 const gameSlice = createSlice({
@@ -17,6 +19,12 @@ const gameSlice = createSlice({
   reducers: {
     startGame: (state) => {
       state.status = GAME_STATUS.STARTED;
+    },
+    play: (state) => {
+      state.status = GAME_STATUS.PLAYING;
+    },
+    levelEnded: (state) => {
+      state.status = GAME_STATUS.LEVEL_WON;
     },
     endGame: (state) => {
       state.status = GAME_STATUS.OVER;
@@ -27,6 +35,7 @@ const gameSlice = createSlice({
       state.level = 0;
       state.lives = 3;
       state.fruits = [];
+      state.pelletsArray = []; // Reset pellets to initial state
     },
     increaseScore: (state, action: PayloadAction<number>) => {
       state.score += action.payload;
@@ -45,7 +54,16 @@ const gameSlice = createSlice({
     },
     setFruits: (state, action: PayloadAction<number[]>) => {
       state.fruits = action.payload;
-    }
+    },
+    removePellet: (state, action: PayloadAction<{ x: number; y: number }>) => {
+      const { x, y } = action.payload;
+      state.pelletsArray = state.pelletsArray.map((pellet) => {
+        if (pellet.x === x && pellet.y === y) {
+          return { ...pellet, isEaten: true };
+        }
+        return pellet;
+      });
+    },
   },
 });
 
