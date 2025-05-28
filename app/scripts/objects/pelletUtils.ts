@@ -51,6 +51,7 @@ export function usePelletCollision(
 
   useGameloop(() => {
     let changed = false;
+    dispatch(GameActions.setHighScore())
     for (const pellet of pelletsRef.current) {
       if (pellet.isEaten) continue;
       const isCollided = isCollidingWithObject(

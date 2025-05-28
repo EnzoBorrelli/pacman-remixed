@@ -40,8 +40,10 @@ const gameSlice = createSlice({
     increaseScore: (state, action: PayloadAction<number>) => {
       state.score += action.payload;
     },
-    setHighScore: (state, action: PayloadAction<number>) => {
-      state.score += action.payload;
+    setHighScore: (state) => {
+      if (state.score > state.highScore) {
+        state.highScore = state.score;
+      }
     },
     nextLevel: (state) => {
       state.level += 1;
