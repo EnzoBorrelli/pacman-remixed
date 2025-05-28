@@ -5,19 +5,29 @@ import Pellet from "./pellet";
 import { CHAR_SPAWNS } from "~/consts/game";
 import Fruit from "./fruit";
 
-export default function Level({level,pellets}: { level: number,pellets: iPellet[] }) {
-  
+export default function Level({
+  level,
+  pellets,
+  isFruitVisible,
+}: {
+  level: number;
+  pellets: iPellet[];
+  isFruitVisible: boolean;
+}) {
   const fruitType = level > 7 ? 7 : level;
-  
-  
- 
+
   return (
     <Container x={0} y={0}>
       <Sprite image={map} />
       {pellets.map((pellet, index) => (
         <Pellet key={index} x={pellet.x} y={pellet.y} type={pellet.type} />
       ))}
-      <Fruit x={CHAR_SPAWNS.FRUIT.x} y={CHAR_SPAWNS.FRUIT.y} type={fruitType} />
+      <Fruit
+        x={CHAR_SPAWNS.FRUIT.x}
+        y={CHAR_SPAWNS.FRUIT.y}
+        type={fruitType}
+        isEaten={!isFruitVisible}
+      />
     </Container>
   );
 }
