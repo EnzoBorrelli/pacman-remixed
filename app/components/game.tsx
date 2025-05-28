@@ -56,6 +56,7 @@ export default function Game() {
         y={pacman.y}
         state={pacman.state}
         direction={pacman.direction}
+        isPlaying={game.status === GAME_STATUS.PLAYING}
       />
       {ghosts.map((ghost) => (
         <Ghost

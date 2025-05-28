@@ -3,11 +3,14 @@ import { PACMAN_STATES } from "~/consts/game";
 import { iPacman } from "~/interfaces/slices";
 import { useAnimations } from "~/animations/pacmanAnimations";
 
+interface pacmanProps extends iPacman {
+  isPlaying: boolean;
+}
 
 
-export default function Pacman({ x, y, state, direction }: iPacman) {
+export default function Pacman({ x, y, state, direction,isPlaying }: pacmanProps) {
   const animation = useAnimations({ state, direction });
-  const anchorX = state === PACMAN_STATES.MOVING ? 0.4 : 0;
+  const anchorX = isPlaying ? 0.4 : 0;
 
   if (!animation || animation.textures.length === 0) return null;
 
