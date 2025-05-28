@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { GAME_STATUS } from "~/consts/game";
 import { RootState } from "~/store";
 import { GameActions } from "~/store/gameSlice";
 
@@ -28,7 +29,7 @@ export function useControls() {
     setHeldDirection((current) => {
       return current !== direction ? direction : current;
     });
-    dispatch(GameActions.play());
+    dispatch(GameActions.setStatus(GAME_STATUS.PLAYING));
   }, []);
 
   useEffect(() => {
