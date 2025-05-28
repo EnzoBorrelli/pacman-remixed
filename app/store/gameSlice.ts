@@ -18,17 +18,10 @@ const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    startGame: (state) => {
-      state.status = GAME_STATUS.STARTED;
+    setStatus: (state, action: PayloadAction<string>) => {
+      state.status = action.payload;
     },
-    play: (state) => {
-      state.status = GAME_STATUS.PLAYING;
-    },
-    levelEnded: (state) => {
-      state.status = GAME_STATUS.LEVEL_WON;
-    },
-    endGame: (state) => {
-      state.status = GAME_STATUS.OVER;
+    gameReset: (state) => {
       if (state.score > state.highScore) {
         state.highScore = state.score;
       }
