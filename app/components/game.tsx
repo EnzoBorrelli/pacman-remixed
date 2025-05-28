@@ -16,6 +16,7 @@ import {
 import Pacman from "./pacman";
 import { useMovement } from "~/scripts/pacman/useMovement";
 import { usePelletCollision } from "~/scripts/objects/pelletUtils";
+import { useFruitCollision } from "~/scripts/objects/fruitUtils";
 
 export default function Game() {
   const game = useSelector((state: RootState) => state.game);
@@ -38,6 +39,7 @@ export default function Game() {
   }, [game.status, dispatch]);
 
   const currentPellets = usePelletCollision(pacman.x, pacman.y);
+  useFruitCollision(game, pacman.x, pacman.y,pacman.eatenPellets!);
   useMovement({ state: pacman.state, x: pacman.x, y: pacman.y });
 
   return (
@@ -50,7 +52,11 @@ export default function Game() {
         autoDensity: true,
       }}
     >
-      <Level level={game.level} pellets={currentPellets} />
+      <Level
+        level={game.level}
+        pellets={currentPellets}
+        isFruitVisible={game.fruitSpawned}
+      />
       <Pacman
         x={pacman.x}
         y={pacman.y}
