@@ -8,6 +8,7 @@ export const DIRECTIONS = {
 export const GAME_STATUS = {
   STARTED: "STARTED",
   PLAYING:"PLAYING",
+  LOSE_LIFE:"LOSE_LIFE",
   LEVEL_WON: "LEVEL_WON",
   OVER: "OVER",
 };
@@ -44,3 +45,5 @@ export const GHOST_STATES = {
   DEAD: "DEAD",
   EATING_PACMAN: "EATING_PACMAN",
 };
+
+export const FRUIT_SCORES = [100, 300, 500, 700, 1000, 2000, 3000, 5000];
