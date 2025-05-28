@@ -1,4 +1,4 @@
-import { CHAR_SPAWNS, SIZES } from "~/consts/game";
+import { CHAR_SPAWNS, FRUIT_SCORES, SIZES } from "~/consts/game";
 import { isCollidingWithObject } from "~/utils/isColliding";
 import { useGameloop } from "../useGameLoop";
 import { useDispatch } from "react-redux";
@@ -23,6 +23,7 @@ export function useFruitCollision(
 ) {
   const dispatch = useDispatch();
   const fruitID = game.level > 7 ? 7 : game.level;
+  const fruitScore = FRUIT_SCORES[fruitID];
   const fruitTimer = useRef(0);
 
   useGameloop(() => {
@@ -49,7 +50,12 @@ export function useFruitCollision(
     );
     if (game.fruitSpawned) {
       if (isCollided) {
-          soundPlayer.PlaySound({ folder: "gameplay", audio: "eat_fruit" });
+        soundPlayer.PlaySound({
+          folder: "gameplay",
+          audio: "eat_fruit",
+          useCache: true,
+        });
+        dispatch(GameActions.increaseScore(fruitScore));
         dispatch(GameActions.toggleFruitEaten());
         const newFruitArray = shiftFruitArray(game.fruits, fruitID);
         dispatch(GameActions.setFruits(newFruitArray));
