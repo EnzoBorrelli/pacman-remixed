@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GAME_STATUS } from "~/consts/game";
-import { PELLETS_MAP } from "~/consts/map";
 import { iGameState } from "~/interfaces/slices";
 
 const initialState: iGameState = {
@@ -10,6 +9,8 @@ const initialState: iGameState = {
   level: 0,
   lives: 3,
   fruits: [],
+  fruitSpawnsCount: 0,
+  fruitSpawned: false,
   pelletsArray: [],
 };
 
@@ -35,6 +36,8 @@ const gameSlice = createSlice({
       state.level = 0;
       state.lives = 3;
       state.fruits = [];
+      state.fruitSpawnsCount = 0;
+      state.fruitSpawned = false;
       state.pelletsArray = []; // Reset pellets to initial state
     },
     increaseScore: (state, action: PayloadAction<number>) => {
@@ -56,6 +59,14 @@ const gameSlice = createSlice({
     },
     setFruits: (state, action: PayloadAction<number[]>) => {
       state.fruits = action.payload;
+    },
+    increaseFruitSpawnsCount: (state) => {
+      state.fruitSpawnsCount += 1;
+      state.fruitSpawned = state.fruitSpawnsCount % 2 !== 0;
+    },
+    toggleFruitEaten: (state) => {
+      state.fruitSpawnsCount = 6; // Reset fruit spawns count after eating
+      state.fruitSpawned = false;
     },
     removePellet: (state, action: PayloadAction<{ x: number; y: number }>) => {
       const { x, y } = action.payload;
