@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DIRECTIONS, PACMAN_STATES } from "~/consts/game";
+import { DIRECTIONS, GAME_STATUS, PACMAN_STATES } from "~/consts/game";
 import { RootState } from "~/store";
 import { GameActions } from "~/store/gameSlice";
 import { PacmanActions } from "~/store/pacmanSlice";
@@ -17,7 +17,7 @@ export default function PacmanDebugger() {
   }
 
   function resetPacman() {
-    dispatch(GameActions.startGame());
+    dispatch(GameActions.setStatus(GAME_STATUS.STARTED));
     dispatch(PacmanActions.reset());
   }
 
@@ -57,7 +57,7 @@ export default function PacmanDebugger() {
           {PACMAN_STATES.EATING_GHOST}
         </li>
       </ul>
-      <h3>Directions</h3>
+      {/*<h3>Directions</h3>
       <ul className="grid grid-cols-2 gap-2 text-xs text-center">
         <li
           onClick={() => handleDirectionChange(DIRECTIONS.UP)}
@@ -83,7 +83,7 @@ export default function PacmanDebugger() {
         >
           {DIRECTIONS.RIGHT}
         </li>
-      </ul>
+      </ul>*/}
       <h3>Current values</h3>
       <ul className="grid grid-cols-2 gap-2 text-xs text-center">
         <li>X: {pacman.x}</li>
