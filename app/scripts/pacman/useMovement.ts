@@ -63,5 +63,8 @@ export function useMovement({
     if (x < 2) {
       dispatch(PacmanActions.setCoordinates({ x: 426, y }));
     }
+    if(state === PACMAN_STATES.EATING_POWER_PELLET) {
+      dispatch(PacmanActions.decreasePowerPelletTimeout());
+    }
   });
 }

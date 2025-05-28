@@ -17,6 +17,7 @@ export interface iPacman {
     direction: string;
     eatenCombo?: string[];
     eatenPellets?: number;
+    powerPelletTimeout?: number;
 }
 
 

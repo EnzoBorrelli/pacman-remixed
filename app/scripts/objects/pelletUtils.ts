@@ -61,12 +61,12 @@ export function usePelletCollision(
         pellet.y,
       );
       if (isCollided) {
-        console.log("Collision detected with pellet at", pellet.x, pellet.y);
         dispatch(GameActions.removePellet({ x: pellet.x, y: pellet.y }));
         dispatch(PacmanActions.setEatenPellets());
 
         if (pellet.type === 2) {
           dispatch(PacmanActions.setState(PACMAN_STATES.EATING_POWER_PELLET));
+          dispatch(PacmanActions.resetPowerPelletTimeout());
           soundPlayer.PlaySound({folder:"gameplay",audio:"eat_dot_1"})
           dispatch(GameActions.increaseScore(50));
         } else {
