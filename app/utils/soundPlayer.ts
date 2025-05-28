@@ -10,6 +10,16 @@ interface iSoundPlayer {
 
 const soundCache: Record<string, Howl> = {};
 
+function PreloadSound({ folder, audio }: { folder: string; audio: string }) {
+  const path = `/assets/sounds/${folder}/${audio}.wav`;
+  if (!soundCache[path]) {
+    soundCache[path] = new Howl({
+      src: [path],
+      preload: true,
+    });
+  }
+}
+
 function PlaySound({
   folder,
   audio,
@@ -43,4 +53,4 @@ function StopAllSounds(){
   Howler.stop();
 }
 
-export default { PlaySound, StopAllSounds };
+export default { PreloadSound,PlaySound, StopAllSounds };
