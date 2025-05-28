@@ -1,22 +1,17 @@
 import { Stage } from "@pixi/react";
 import Level from "./level";
 import { GAME_STATUS, SIZES } from "~/consts/game";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "~/store";
-import { useEffect } from "react";
-import { PacmanActions } from "~/store/pacmanSlice";
 import Ghost from "./ghost";
-import EatScoreDisplay from "~/ui/level_ui/eatScoreDisplay";
-import {
-  BlinkyActions,
-  ClydeActions,
-  InkyActions,
-  PinkyActions,
-} from "~/store/ghostSlices";
 import Pacman from "./pacman";
 import { useMovement } from "~/scripts/pacman/useMovement";
 import { usePelletCollision } from "~/scripts/objects/pelletUtils";
 import { useFruitCollision } from "~/scripts/objects/fruitUtils";
+import {
+  useGameStatus,
+  usePreloadLevelSounds,
+} from "~/scripts/level/levelUtils";
 
 export default function Game() {
   const game = useSelector((state: RootState) => state.game);
@@ -26,20 +21,16 @@ export default function Game() {
   const pinky = useSelector((state: RootState) => state.pinky);
   const clyde = useSelector((state: RootState) => state.clyde);
   const ghosts = [blinky, inky, pinky, clyde];
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (game.status === GAME_STATUS.STARTED) {
-      dispatch(PacmanActions.reset());
-      dispatch(BlinkyActions.reset());
-      dispatch(PinkyActions.reset());
-      dispatch(InkyActions.reset());
-      dispatch(ClydeActions.reset());
-    }
-  }, [game.status, dispatch]);
+  //level
+  usePreloadLevelSounds();
+  useGameStatus(game.status);
 
+  //objects
   const currentPellets = usePelletCollision(pacman.x, pacman.y);
-  useFruitCollision(game, pacman.x, pacman.y,pacman.eatenPellets!);
+  useFruitCollision(game, pacman.x, pacman.y, pacman.eatenPellets!);
+
+  //characters
   useMovement({ state: pacman.state, x: pacman.x, y: pacman.y });
 
   return (
@@ -74,7 +65,6 @@ export default function Game() {
           name={ghost.name}
         />
       ))}
-      <EatScoreDisplay x={pacman.x} y={pacman.y} score={0} isVisible={false} />
     </Stage>
   );
 }
