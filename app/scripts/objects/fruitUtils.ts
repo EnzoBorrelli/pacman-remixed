@@ -1,4 +1,4 @@
-import { CHAR_SPAWNS, FRUIT_SCORES, SIZES } from "~/consts/game";
+import { CHAR_SPAWNS, FRUIT_SCORES, GAME_STATUS, SIZES } from "~/consts/game";
 import { isCollidingWithObject } from "~/utils/isColliding";
 import { useGameloop } from "../useGameLoop";
 import { useDispatch } from "react-redux";
@@ -27,6 +27,7 @@ export function useFruitCollision(
   const fruitTimer = useRef(0);
 
   useGameloop(() => {
+    if(eatenPellets>=244){dispatch(GameActions.setStatus(GAME_STATUS.LEVEL_WON))}
     if (game.fruitSpawnsCount % 2 === 0 && game.fruitSpawnsCount <= 4) {
       if (eatenPellets === 70 || eatenPellets === 170) {
         dispatch(GameActions.increaseFruitSpawnsCount());
