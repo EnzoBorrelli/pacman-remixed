@@ -59,7 +59,7 @@ export function usePelletCollision(pacmanX: number, pacmanY: number) {
         pellet.y
       );
       if (isCollided) {
-        dispatch(GameActions.removePellet({ x: pellet.x, y: pellet.y }));
+        //dispatch(GameActions.removePellet({ x: pellet.x, y: pellet.y }));
         dispatch(PacmanActions.setEatenPellets());
 
         if (pellet.type === 2) {
