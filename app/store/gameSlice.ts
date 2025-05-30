@@ -31,7 +31,17 @@ const gameSlice = createSlice({
       state.fruits = [];
       state.fruitSpawnsCount = 0;
       state.fruitSpawned = false;
-      state.pelletsArray = []; // Reset pellets to initial state
+      state.pelletsArray = [];
+      state.status = GAME_STATUS.STARTED; // Reset pellets to initial state
+    },
+    levelReset: (state) => {
+      if (state.score > state.highScore) {
+        state.highScore = state.score;
+      }
+      state.fruitSpawnsCount = 0;
+      state.fruitSpawned = false;
+      state.pelletsArray = [];
+      state.status = GAME_STATUS.STARTED; // Reset pellets to initial state
     },
     increaseScore: (state, action: PayloadAction<number>) => {
       state.score += action.payload;
