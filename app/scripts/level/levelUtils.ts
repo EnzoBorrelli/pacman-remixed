@@ -35,7 +35,18 @@ function loseLife(dispatch: Dispatch) {
   soundPlayer.PlaySound({ folder: "gameplay", audio: "death", useCache: true });
   dispatch(PacmanActions.setState(PACMAN_STATES.DYING));
   dispatch(GameActions.loseLife());
-  dispatch(GameActions.setStatus(GAME_STATUS.STARTED));
+  const timeout = setTimeout(() => {
+    dispatch(GameActions.setStatus(GAME_STATUS.STARTED));
+  }, 1800);
+  return () => clearTimeout(timeout);
+}
+
+function gameOver(dispatch: Dispatch) {
+  dispatch(GameActions.gameReset());
+}
+function levelWon(dispatch: Dispatch) {
+  dispatch(GameActions.nextLevel());
+  dispatch(GameActions.levelReset());
 }
 
 export function useGameStatus(status: string) {
@@ -43,5 +54,7 @@ export function useGameStatus(status: string) {
   useEffect(() => {
     if (status === GAME_STATUS.STARTED) resetLevel(dispatch);
     if (status === GAME_STATUS.LOSE_LIFE) loseLife(dispatch);
+    if (status === GAME_STATUS.OVER) gameOver(dispatch);
+    if (status === GAME_STATUS.LEVEL_WON) levelWon(dispatch);
   }, [status, dispatch]);
 }
