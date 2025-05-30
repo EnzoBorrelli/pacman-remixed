@@ -31,7 +31,7 @@ export default function Game() {
   useFruitCollision(game, pacman.x, pacman.y, pacman.eatenPellets!);
 
   //characters
-  useMovement({ state: pacman.state, x: pacman.x, y: pacman.y });
+  useMovement({ gameStatus:game.status, state: pacman.state, x: pacman.x, y: pacman.y });
 
   return (
     <Stage
