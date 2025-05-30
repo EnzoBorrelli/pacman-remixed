@@ -90,6 +90,7 @@ export default function PacmanDebugger() {
         <li>Sta: {pacman.state}</li>
         <li>Y: {pacman.y}</li>
         <li>dir: {pacman.direction}</li>
+        <li className="col-span-2">pellets: {pacman.eatenPellets}</li>
       </ul>
       <button
         onClick={resetPacman}
