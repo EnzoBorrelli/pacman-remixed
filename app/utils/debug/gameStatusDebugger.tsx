@@ -15,7 +15,7 @@ export default function GameStatusDebugger() {
   return (
     <article className="absolute flex flex-col gap-4 p-4 max-w-[370px] rounded-lg top-[65%] left-10 bg-green-800">
       <h2 className="text-center text-yellow-400 uppercase">Game Status Debugger</h2>
-      <h3>Current status: {status}</h3>
+      <h3 className="text-sm">Current status: {status}</h3>
       <ul className="grid grid-cols-2 gap-2 text-xs text-center">
         <li
           onClick={() => handleStateChange(GAME_STATUS.STARTED)}
@@ -40,6 +40,12 @@ export default function GameStatusDebugger() {
           className="py-1 bg-green-600 ring-1 ring-green-400 hover:bg-green-300 hover:ring-green-50 hover:text-black hover:cursor-pointer"
         >
           {GAME_STATUS.OVER}
+        </li>
+        <li
+          onClick={() => handleStateChange(GAME_STATUS.CONTINUE)}
+          className="py-1 col-span-2 bg-green-600 ring-1 ring-green-400 hover:bg-green-300 hover:ring-green-50 hover:text-black hover:cursor-pointer"
+        >
+          {GAME_STATUS.CONTINUE}
         </li>
       </ul>
     

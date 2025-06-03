@@ -36,7 +36,7 @@ function loseLife(dispatch: Dispatch) {
   dispatch(PacmanActions.setState(PACMAN_STATES.DYING));
   dispatch(GameActions.loseLife());
   const timeout = setTimeout(() => {
-    dispatch(GameActions.setStatus(GAME_STATUS.STARTED));
+    dispatch(GameActions.setStatus(GAME_STATUS.CONTINUE));
   }, 1800);
   return () => clearTimeout(timeout);
 }
@@ -52,7 +52,7 @@ function levelWon(dispatch: Dispatch) {
 export function useGameStatus(status: string) {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (status === GAME_STATUS.STARTED) resetLevel(dispatch);
+    if (status === GAME_STATUS.STARTED|| status === GAME_STATUS.CONTINUE) resetLevel(dispatch);
     if (status === GAME_STATUS.LOSE_LIFE) loseLife(dispatch);
     if (status === GAME_STATUS.OVER) gameOver(dispatch);
     if (status === GAME_STATUS.LEVEL_WON) levelWon(dispatch);

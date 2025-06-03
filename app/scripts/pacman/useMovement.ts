@@ -52,7 +52,7 @@ export function useMovement({
 
   useGameloop(() => {
     const direction = getControlsDirection();
-    if ((gameStatus === GAME_STATUS.STARTED || GAME_STATUS.PLAYING)&& state !== PACMAN_STATES.DYING) {
+    if ((gameStatus === GAME_STATUS.STARTED|| gameStatus === GAME_STATUS.CONTINUE || GAME_STATUS.PLAYING)&& state !== PACMAN_STATES.DYING) {
       if (direction && direction !== undefined && state) {
         dispatch(PacmanActions.setDirection(direction));
         if (state !== PACMAN_STATES.EATING_POWER_PELLET)

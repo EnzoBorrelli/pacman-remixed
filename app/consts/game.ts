@@ -7,6 +7,7 @@ export const DIRECTIONS = {
 };
 export const GAME_STATUS = {
   STARTED: "STARTED",
+  CONTINUE:"CONTINUE",
   PLAYING:"PLAYING",
   LOSE_LIFE:"LOSE_LIFE",
   LEVEL_WON: "LEVEL_WON",
