@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { GAME_STATUS, PACMAN_STATES, SIZES } from "~/consts/game";
 import { PELLETS_MAP } from "~/consts/map";
