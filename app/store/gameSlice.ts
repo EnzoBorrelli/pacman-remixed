@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GAME_STATUS } from "~/consts/game";
+import { iPellet } from "~/interfaces/components";
 import { iGameState } from "~/interfaces/slices";
 
 const initialState: iGameState = {
@@ -79,6 +80,9 @@ const gameSlice = createSlice({
         }
         return pellet;
       });
+    },
+    setPellets: (state, action: PayloadAction<iPellet[]>) => {
+      state.pelletsArray = action.payload;
     },
   },
 });
