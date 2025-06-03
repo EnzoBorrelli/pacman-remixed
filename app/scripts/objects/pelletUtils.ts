@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { PACMAN_STATES, SIZES } from "~/consts/game";
+import { GAME_STATUS, PACMAN_STATES, SIZES } from "~/consts/game";
 import { PELLETS_MAP } from "~/consts/map";
 import { GameActions } from "~/store/gameSlice";
 import { PacmanActions } from "~/store/pacmanSlice";
@@ -9,48 +9,46 @@ import { iPellet } from "~/interfaces/components";
 import { isCollidingWithObject } from "~/utils/isColliding";
 import soundPlayer from "~/utils/soundPlayer";
 
-function useMapPellets(pelletsMap: number[][] = PELLETS_MAP) {
-  const [pellets, setPellets] = useState<iPellet[]>([]);
+export function generatePellets(map: number[][]): iPellet[] {
+  const pelletsArray: iPellet[] = [];
 
-  useEffect(() => {
-    const pelletsArray: iPellet[] = [];
-    for (let row = 0; row < pelletsMap.length; row++) {
-      for (let col = 0; col < pelletsMap[row].length; col++) {
-        if (pelletsMap[row][col] !== 0) {
-          const x = col * SIZES.TILE;
-          const y = row * SIZES.TILE;
-          pelletsArray.push({
-            x,
-            y,
-            type: pelletsMap[row][col],
-            isEaten: false,
-          });
-        }
+  for (let row = 0; row < map.length; row++) {
+    for (let col = 0; col < map[row].length; col++) {
+      if (map[row][col] !== 0) {
+        const x = col * SIZES.TILE;
+        const y = row * SIZES.TILE;
+        pelletsArray.push({
+          x,
+          y,
+          type: map[row][col],
+          isEaten: false,
+        });
       }
     }
-    setPellets(pelletsArray);
-  }, [pelletsMap]);
+  }
 
-  return pellets;
+  return pelletsArray;
 }
 
-export function usePelletCollision(pacmanX: number, pacmanY: number) {
+export function usePelletCollision(
+  pacmanX: number,
+  pacmanY: number,
+  pellets: iPellet[],
+  status: string
+) {
   const dispatch = useDispatch();
-  const initialPellets = useMapPellets();
-  const [visiblePellets, setVisiblePellets] = useState<iPellet[]>([]);
-  const pelletsRef = useRef<iPellet[]>([]);
 
-  // Set once pellets are loaded
   useEffect(() => {
-    pelletsRef.current = initialPellets;
-    setVisiblePellets(initialPellets);
-  }, [initialPellets]);
+    if (status === GAME_STATUS.STARTED) {
+      const pelletsArray = generatePellets(PELLETS_MAP);
+      dispatch(GameActions.setPellets(pelletsArray));
+    }
+  }, [status, dispatch]);
 
   useGameloop(() => {
-    let changed = false;
-    dispatch(GameActions.setHighScore());
-    for (const pellet of pelletsRef.current) {
+    for (const pellet of pellets) {
       if (pellet.isEaten) continue;
+      dispatch(GameActions.setHighScore());
       const isCollided = isCollidingWithObject(
         pacmanX,
         pacmanY,
@@ -59,7 +57,7 @@ export function usePelletCollision(pacmanX: number, pacmanY: number) {
         pellet.y
       );
       if (isCollided) {
-        //dispatch(GameActions.removePellet({ x: pellet.x, y: pellet.y }));
+        dispatch(GameActions.removePellet({ x: pellet.x, y: pellet.y }));
         dispatch(PacmanActions.setEatenPellets());
 
         if (pellet.type === 2) {
@@ -80,14 +78,10 @@ export function usePelletCollision(pacmanX: number, pacmanY: number) {
           });
         }
 
-        pellet.isEaten = true;
-        changed = true;
-      }
-      if (changed) {
-        setVisiblePellets([...pelletsRef.current.filter((p) => !p.isEaten)]);
+        break;
       }
     }
   });
 
-  return visiblePellets;
+  return pellets.filter((p) => !p.isEaten);
 }

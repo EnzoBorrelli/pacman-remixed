@@ -27,11 +27,21 @@ export default function Game() {
   useGameStatus(game.status);
 
   //objects
-  const currentPellets = usePelletCollision(pacman.x, pacman.y);
+  const currentPellets = usePelletCollision(
+    pacman.x,
+    pacman.y,
+    game.pelletsArray,
+    game.status
+  );
   useFruitCollision(game, pacman.x, pacman.y, pacman.eatenPellets!);
 
   //characters
-  useMovement({ gameStatus:game.status, state: pacman.state, x: pacman.x, y: pacman.y });
+  useMovement({
+    gameStatus: game.status,
+    state: pacman.state,
+    x: pacman.x,
+    y: pacman.y,
+  });
 
   return (
     <Stage
