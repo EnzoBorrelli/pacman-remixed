@@ -12,6 +12,7 @@ import {
   useGameStatus,
   usePreloadLevelSounds,
 } from "~/scripts/level/levelUtils";
+import CinematicStart from "~/ui/level_ui/cinematicStart";
 
 export default function Game() {
   const game = useSelector((state: RootState) => state.game);
@@ -75,6 +76,7 @@ export default function Game() {
           name={ghost.name}
         />
       ))}
+      <CinematicStart level={game.level} status={game.status}/>
     </Stage>
   );
 }
