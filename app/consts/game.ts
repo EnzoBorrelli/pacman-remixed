@@ -6,6 +6,7 @@ export const DIRECTIONS = {
   NONE: undefined,
 };
 export const GAME_STATUS = {
+  CINEMATIC:"CINEMATIC",
   STARTED: "STARTED",
   CONTINUE:"CONTINUE",
   PLAYING:"PLAYING",

@@ -22,6 +22,13 @@ export function usePreloadLevelSounds() {
     soundPlayer.PreloadSound({ folder: "gameplay", audio: "fright" });
   }, []);
 }
+function cinematicToGame(dispatch: Dispatch) {
+  soundPlayer.PlaySound({ folder: "gameplay", audio: "start" });
+  const timeout = setTimeout(() => {
+    dispatch(GameActions.setStatus(GAME_STATUS.STARTED));
+  }, 4000);
+  return () => clearTimeout(timeout);
+}
 
 function resetLevel(dispatch: Dispatch) {
   dispatch(PacmanActions.reset());
@@ -43,16 +50,20 @@ function loseLife(dispatch: Dispatch) {
 
 function gameOver(dispatch: Dispatch) {
   dispatch(GameActions.gameReset());
+  dispatch(GameActions.setStatus(GAME_STATUS.CINEMATIC));
 }
 function levelWon(dispatch: Dispatch) {
   dispatch(GameActions.nextLevel());
   dispatch(GameActions.levelReset());
+  dispatch(GameActions.setStatus(GAME_STATUS.CINEMATIC));
 }
 
 export function useGameStatus(status: string) {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (status === GAME_STATUS.STARTED|| status === GAME_STATUS.CONTINUE) resetLevel(dispatch);
+    if (status === GAME_STATUS.CINEMATIC) cinematicToGame(dispatch);
+    if (status === GAME_STATUS.STARTED || status === GAME_STATUS.CONTINUE)
+      resetLevel(dispatch);
     if (status === GAME_STATUS.LOSE_LIFE) loseLife(dispatch);
     if (status === GAME_STATUS.OVER) gameOver(dispatch);
     if (status === GAME_STATUS.LEVEL_WON) levelWon(dispatch);
