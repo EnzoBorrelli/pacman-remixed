@@ -27,7 +27,9 @@ export function useFruitCollision(
   const fruitTimer = useRef(0);
 
   useGameloop(() => {
-    if(eatenPellets>=244){dispatch(GameActions.setStatus(GAME_STATUS.LEVEL_WON))}
+    if (eatenPellets >= 244 && game.status === GAME_STATUS.PLAYING) {
+      dispatch(GameActions.setStatus(GAME_STATUS.LEVEL_WON));
+    }
     if (game.fruitSpawnsCount % 2 === 0 && game.fruitSpawnsCount <= 4) {
       if (eatenPellets === 70 || eatenPellets === 170) {
         dispatch(GameActions.increaseFruitSpawnsCount());
