@@ -43,9 +43,15 @@ export default function GameStatusDebugger() {
         </li>
         <li
           onClick={() => handleStateChange(GAME_STATUS.CONTINUE)}
-          className="py-1 col-span-2 bg-green-600 ring-1 ring-green-400 hover:bg-green-300 hover:ring-green-50 hover:text-black hover:cursor-pointer"
+          className="py-1 bg-green-600 ring-1 ring-green-400 hover:bg-green-300 hover:ring-green-50 hover:text-black hover:cursor-pointer"
         >
           {GAME_STATUS.CONTINUE}
+        </li>
+        <li
+          onClick={() => handleStateChange(GAME_STATUS.CINEMATIC)}
+          className="py-1 bg-green-600 ring-1 ring-green-400 hover:bg-green-300 hover:ring-green-50 hover:text-black hover:cursor-pointer"
+        >
+          {GAME_STATUS.CINEMATIC}
         </li>
       </ul>
     
