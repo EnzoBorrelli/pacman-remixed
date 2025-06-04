@@ -42,6 +42,7 @@ export default function Game() {
     state: pacman.state,
     x: pacman.x,
     y: pacman.y,
+    currentDirection: pacman.direction,
   });
 
   return (
@@ -76,7 +77,7 @@ export default function Game() {
           name={ghost.name}
         />
       ))}
-      <CinematicStart level={game.level} status={game.status}/>
+      <CinematicStart level={game.level} status={game.status} />
     </Stage>
   );
 }

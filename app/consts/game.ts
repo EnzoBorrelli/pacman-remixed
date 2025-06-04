@@ -30,6 +30,13 @@ export const CHAR_SPAWNS = {
   FRUIT:{ x: 208, y: 272 },
 };
 
+export const MAP_TP_COORDS = {
+  LEFT_IN: 2,
+  LEFT_OUT: 4,
+  RIGHT_IN: 432,
+  RIGHT_OUT: 426,
+};
+
 export const PACMAN_STATES = {
   IDLE: "IDLE",
   MOVING: "MOVING",
