@@ -23,7 +23,7 @@ function PreloadSound({ folder, audio }: { folder: string; audio: string }) {
 function PlaySound({
   folder,
   audio,
-  volume = 1,
+  volume = 0.3,//return to 1 later
   loop = false,
   useCache = loop, // only looped sounds are cached by default
 }: iSoundPlayer): Howl {
@@ -31,6 +31,8 @@ function PlaySound({
 
   if (useCache && soundCache[path]) {
     const cachedSound = soundCache[path];
+    cachedSound.loop(loop)
+    cachedSound.volume(volume)
     cachedSound.play();
     return cachedSound;
   }
