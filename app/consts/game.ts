@@ -31,10 +31,10 @@ export const CHAR_SPAWNS = {
 };
 
 export const MAP_TP_COORDS = {
-  LEFT_IN: 2,
-  LEFT_OUT: 4,
-  RIGHT_IN: 432,
-  RIGHT_OUT: 426,
+  LEFT_IN: 12,
+  LEFT_OUT: 20,
+  RIGHT_IN: 430,
+  RIGHT_OUT: 424,
 };
 
 export const PACMAN_STATES = {

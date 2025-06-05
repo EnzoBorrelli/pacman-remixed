@@ -1,10 +1,13 @@
 import { PacmanActions } from "~/store/pacmanSlice";
 import { useControls } from "./useControls";
 import { useDispatch } from "react-redux";
-import { GAME_STATUS, MAP_TP_COORDS, PACMAN_STATES } from "~/consts/game";
+import {
+  GAME_STATUS,
+  MAP_TP_COORDS,
+  PACMAN_STATES,
+} from "~/consts/game";
 import { useGameloop } from "../useGameLoop";
 import { isCollidingWithMap } from "~/utils/isColliding";
-
 
 export function useMovement({
   gameStatus,
@@ -32,19 +35,19 @@ export function useMovement({
       switch (direction) {
         case "UP":
           newY -= speed;
-          collisionY = 0;
+          collisionY = -4;
           break;
         case "DOWN":
           newY += speed;
-          collisionY = 8;
+          collisionY = 8 + 4;
           break;
         case "LEFT":
           newX -= speed;
-          collisionX = 0;
+          collisionX = -4;
           break;
         case "RIGHT":
           newX += speed;
-          collisionX = 8;
+          collisionX = 8 + 4;
           break;
         default:
           break;
