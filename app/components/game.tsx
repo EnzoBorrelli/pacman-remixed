@@ -13,6 +13,7 @@ import {
   usePreloadLevelSounds,
 } from "~/scripts/level/levelUtils";
 import CinematicStart from "~/ui/level_ui/cinematicStart";
+import { fraidManager } from "~/scripts/ghosts/fraidManager";
 
 export default function Game() {
   const game = useSelector((state: RootState) => state.game);
@@ -37,6 +38,7 @@ export default function Game() {
   useFruitCollision(game, pacman.x, pacman.y, pacman.eatenPellets!);
 
   //characters
+  fraidManager({powerPelletTimeout:pacman.powerPelletTimeout!,state:pacman.state})
   useMovement({
     gameStatus: game.status,
     state: pacman.state,
