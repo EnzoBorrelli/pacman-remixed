@@ -1,3 +1,5 @@
+import { BlinkyActions } from "~/store/ghostSlices";
+
 export interface iPellet{
     x: number;
     y: number;
@@ -18,3 +20,5 @@ export interface iEatScoreDisplay{
     isVisible: boolean;
     score: number;
 }
+
+export type ghostActions = typeof BlinkyActions
