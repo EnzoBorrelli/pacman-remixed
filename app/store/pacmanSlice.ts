@@ -7,7 +7,6 @@ const initialState: iPacman = {
   y: CHAR_SPAWNS.PACMAN.y,
   state: PACMAN_STATES.IDLE,
   direction: DIRECTIONS.LEFT,
-  eatenCombo: [],
   eatenPellets: 0,
   powerPelletTimeout: 800,
 };
@@ -21,7 +20,6 @@ const pacmanSlice = createSlice({
       state.y = CHAR_SPAWNS.PACMAN.y;
       state.state = PACMAN_STATES.IDLE;
       state.direction = DIRECTIONS.LEFT;
-      state.eatenCombo = [];
       state.eatenPellets = 0;
       state.powerPelletTimeout = 800; // Reset power pellet timeout
     },
@@ -37,9 +35,6 @@ const pacmanSlice = createSlice({
     },
     setDirection: (state, action: PayloadAction<string>) => {
       state.direction = action.payload;
-    },
-    setEatenCombo: (state, action: PayloadAction<string[]>) => {
-      state.eatenCombo = action.payload;
     },
     setEatenPellets: (state) => {
       state.eatenPellets = state.eatenPellets! + 1;
