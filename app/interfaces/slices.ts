@@ -17,7 +17,6 @@ export interface iPacman {
   y: number;
   state: string;
   direction: string;
-  eatenCombo?: string[];
   eatenPellets?: number;
   powerPelletTimeout?: number;
 }
@@ -28,4 +27,5 @@ export interface iGhost {
   state: string;
   direction: string;
   name?: string;
+  behavior?:string
 }

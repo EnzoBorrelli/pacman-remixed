@@ -6,28 +6,28 @@ export const DIRECTIONS = {
   NONE: undefined,
 };
 export const GAME_STATUS = {
-  CINEMATIC:"CINEMATIC",
+  CINEMATIC: "CINEMATIC",
   STARTED: "STARTED",
-  CONTINUE:"CONTINUE",
-  PLAYING:"PLAYING",
-  LOSE_LIFE:"LOSE_LIFE",
+  CONTINUE: "CONTINUE",
+  PLAYING: "PLAYING",
+  LOSE_LIFE: "LOSE_LIFE",
   LEVEL_WON: "LEVEL_WON",
   OVER: "OVER",
 };
 
 export const SIZES = {
-  CHARACTER:32,
+  CHARACTER: 32,
   TILE: 16,
   MAP: { WIDTH: 448, HEIGHT: 496 },
-}
+};
 
 export const CHAR_SPAWNS = {
-  PACMAN: { x: 208, y: 368},
+  PACMAN: { x: 208, y: 368 },
   BLINKY: { x: 208, y: 174 },
   PINKY: { x: 208, y: 222 },
   INKY: { x: 176, y: 222 },
   CLYDE: { x: 240, y: 222 },
-  FRUIT:{ x: 208, y: 272 },
+  FRUIT: { x: 208, y: 272 },
 };
 
 export const MAP_TP_COORDS = {
@@ -55,4 +55,13 @@ export const GHOST_STATES = {
   EATING_PACMAN: "EATING_PACMAN",
 };
 
+export const BEHAVIOR_STATES = {
+  CHASE: "CHASE",
+  SCATTER: "SCATTER",
+  EATEN: "EATEN",
+  FRIGHTENED: "FRIGHTENED",
+};
+
 export const FRUIT_SCORES = [100, 300, 500, 700, 1000, 2000, 3000, 5000];
+
+export const COMBO_SCORES = [200,400,800,1600]

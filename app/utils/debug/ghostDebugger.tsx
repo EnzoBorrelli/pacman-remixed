@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DIRECTIONS, GHOST_STATES } from "~/consts/game";
+import { ghostActions } from "~/interfaces/components";
 import { iGhost } from "~/interfaces/slices";
 import { RootState } from "~/store";
 import {
@@ -19,7 +20,7 @@ export default function GhostDebugger() {
 
   const [focusedGhost, setFocusedGhost] = useState<iGhost>(blinky);
   const [ghostActions, setGhostActions] =
-    useState<typeof BlinkyActions>(BlinkyActions);
+    useState<ghostActions>(BlinkyActions);
   const [colors,setColors] = useState(["bg-slate-800", "bg-slate-600", "ring-slate-400"]);
 
   function handleStateChange(state: string) {
@@ -157,7 +158,7 @@ export default function GhostDebugger() {
         <li>X: {focusedGhost.x}</li>
         <li>Sta: {focusedGhost.state}</li>
         <li>Y: {focusedGhost.y}</li>
-        <li>dir: {focusedGhost.direction}</li>
+        <li>beh: {focusedGhost.behavior}</li>
       </ul>
     </article>
   );
