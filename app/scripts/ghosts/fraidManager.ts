@@ -1,60 +1,91 @@
-import { GHOST_STATES, PACMAN_STATES } from "~/consts/game";
+import {
+  BEHAVIOR_STATES,
+  COMBO_SCORES,
+  GHOST_STATES,
+  PACMAN_STATES,
+} from "~/consts/game";
 import { useGameloop } from "../useGameLoop";
-import { useDispatch } from "react-redux";
 import {
   BlinkyActions,
   ClydeActions,
   InkyActions,
   PinkyActions,
 } from "~/store/ghostSlices";
-import { Dispatch } from "@reduxjs/toolkit";
 import soundPlayer from "~/utils/soundPlayer";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { collisionState, useBehaviorManager } from "./ghostUtils";
+import { useDispatch } from "react-redux";
+import { iGhost, iPacman } from "~/interfaces/slices";
+import { GameActions } from "~/store/gameSlice";
 
-function frightMode(
-  ghostName: typeof BlinkyActions,
-  powerTime: number,
-  dispatch: Dispatch
-) {
-  if (powerTime > 400) {
-    dispatch(ghostName.setState(GHOST_STATES.FRIGHTENED));
-  } else if (powerTime < 400 && powerTime > 0) {
-    dispatch(ghostName.setState(GHOST_STATES.RESTORING));
-  }
-}
+export const ghostsActions = [
+  BlinkyActions,
+  InkyActions,
+  PinkyActions,
+  ClydeActions,
+];
 
 export function fraidManager({
-  powerPelletTimeout,
   state,
+  ghosts,
 }: {
-  powerPelletTimeout: number;
   state: string;
+  ghosts: iGhost[];
 }) {
+  const behaviorManager = useBehaviorManager();
   const dispatch = useDispatch();
+  const [combo, setCombo] = useState(0);
+
+  useEffect(() => {
+    ghosts.forEach((ghost) => {
+      if (ghost.state === GHOST_STATES.DEAD) {
+        soundPlayer.PlaySound({ folder: "gameplay", audio: "eat_ghost",useCache:true });
+        dispatch(GameActions.increaseScore(COMBO_SCORES[combo]));
+        setCombo(combo + 1);
+      }
+    });
+  }, [
+    ghosts[0].state,
+    ghosts[1].state,
+    ghosts[2].state,
+    ghosts[3].state,
+    dispatch,
+  ]);
+
+  useEffect(() => {
+    if (combo ===3) dispatch(GameActions.addLife());
+  }, [combo, dispatch]);
 
   useEffect(() => {
     if (state === PACMAN_STATES.EATING_POWER_PELLET) {
+      setCombo(0);
       soundPlayer.PlaySound({
         folder: "gameplay",
         audio: "fright",
         loop: true,
       });
     } else {
-      soundPlayer.StopAllSounds();
+      soundPlayer.StopSound("gameplay", "fright");
+      ghostsActions.forEach((ghost) =>
+        dispatch(ghost.setBehavior(BEHAVIOR_STATES.SCATTER))
+      );
     }
   }, [state]);
 
   useGameloop(() => {
-    if (state === PACMAN_STATES.EATING_POWER_PELLET) {
-      frightMode(BlinkyActions, powerPelletTimeout, dispatch);
-      frightMode(InkyActions, powerPelletTimeout, dispatch);
-      frightMode(PinkyActions, powerPelletTimeout, dispatch);
-      frightMode(ClydeActions, powerPelletTimeout, dispatch);
-    } else {
-      dispatch(BlinkyActions.reset());
-      dispatch(InkyActions.reset());
-      dispatch(PinkyActions.reset());
-      dispatch(ClydeActions.reset());
-    }
+    ghostsActions.forEach((ghost, index) => {
+      if (ghosts[index].behavior != null)
+        behaviorManager(ghosts[index].behavior!, ghost);
+    });
+  });
+}
+
+export function fraidCollisions(ghosts: iGhost[], pacman: iPacman) {
+  const dispatch = useDispatch();
+
+  useGameloop(() => {
+    ghosts.forEach((ghost, index) =>
+      collisionState(pacman, ghost, ghostsActions[index], dispatch)
+    );
   });
 }
