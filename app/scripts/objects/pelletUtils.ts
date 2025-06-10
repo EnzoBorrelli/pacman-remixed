@@ -1,6 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { GAME_STATUS, PACMAN_STATES, SIZES } from "~/consts/game";
+import {
+  BEHAVIOR_STATES,
+  GAME_STATUS,
+  GHOST_STATES,
+  PACMAN_STATES,
+  SIZES,
+} from "~/consts/game";
 import { PELLETS_MAP } from "~/consts/map";
 import { GameActions } from "~/store/gameSlice";
 import { PacmanActions } from "~/store/pacmanSlice";
@@ -8,6 +14,8 @@ import { useGameloop } from "../useGameLoop";
 import { iPellet } from "~/interfaces/components";
 import { isCollidingWithObject } from "~/utils/isColliding";
 import soundPlayer from "~/utils/soundPlayer";
+import { ghostsActions } from "../ghosts/fraidManager";
+import { iGhost } from "~/interfaces/slices";
 
 export function generatePellets(map: number[][]): iPellet[] {
   const pelletsArray: iPellet[] = [];
@@ -34,7 +42,8 @@ export function usePelletCollision(
   pacmanX: number,
   pacmanY: number,
   pellets: iPellet[],
-  status: string
+  status: string,
+  ghosts: iGhost[]
 ) {
   const dispatch = useDispatch();
 
@@ -62,6 +71,10 @@ export function usePelletCollision(
 
         if (pellet.type === 2) {
           dispatch(PacmanActions.setState(PACMAN_STATES.EATING_POWER_PELLET));
+          ghostsActions.forEach((ghost, index) => {
+            if (ghosts[index].state !== GHOST_STATES.DEAD)
+              dispatch(ghost.setBehavior(BEHAVIOR_STATES.FRIGHTENED));
+          });
           dispatch(PacmanActions.resetPowerPelletTimeout());
           soundPlayer.PlaySound({
             folder: "gameplay",
