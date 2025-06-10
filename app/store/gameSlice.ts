@@ -53,6 +53,9 @@ const gameSlice = createSlice({
     nextLevel: (state) => {
       state.level += 1;
     },
+    addLife: (state) => {
+      state.lives += 1;
+    },
     loseLife: (state) => {
       state.lives -= 1;
       if (state.lives <= 0) {
