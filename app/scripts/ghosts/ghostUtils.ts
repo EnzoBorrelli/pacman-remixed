@@ -12,49 +12,62 @@ import { iGhost, iPacman } from "~/interfaces/slices";
 import { RootState } from "~/store";
 import { GameActions } from "~/store/gameSlice";
 import { isCollidingWithObject } from "~/utils/isColliding";
+import { moveToTarget } from "./moveToTarget";
 
 type iState = {
-  ghost: ghostActions;
+  ghost: iGhost;
+  actions: ghostActions;
   dispatch: Dispatch;
 };
 
 function chaseState() {}
 
-function scatterState({ ghost, dispatch }: iState) {
-  dispatch(ghost.setState(GHOST_STATES.IDLE));
+function scatterState(
+  { ghost, actions, dispatch }: iState,
+  pacmanX: number,
+  pacmanY: number
+) {
+  moveToTarget(ghost, actions, pacmanX, pacmanY, dispatch);
 }
 
-function frightenedState({ ghost, dispatch }: iState, powerTime: number) {
+function frightenedState(
+  { ghost, actions, dispatch }: iState,
+  powerTime: number
+) {
   if (powerTime > 400) {
-    dispatch(ghost.setState(GHOST_STATES.FRIGHTENED));
+    dispatch(actions.setState(GHOST_STATES.FRIGHTENED));
   } else if (powerTime < 400 && powerTime > 0) {
-    dispatch(ghost.setState(GHOST_STATES.RESTORING));
+    dispatch(actions.setState(GHOST_STATES.RESTORING));
   }
 }
 
-function eatenState({ ghost, dispatch }: iState) {
-  dispatch(ghost.setState(GHOST_STATES.DEAD));
+function eatenState({ ghost, actions, dispatch }: iState) {
+  dispatch(actions.setState(GHOST_STATES.DEAD));
 }
 
 export function useBehaviorManager() {
   const pacman = useSelector((state: RootState) => state.pacman);
   const dispatch = useDispatch();
-  return (behavior: string, ghost: ghostActions) => {
-    if (behavior === BEHAVIOR_STATES.CHASE) {
+  return (ghost: iGhost, actions: ghostActions) => {
+    if (ghost.behavior === BEHAVIOR_STATES.CHASE) {
       chaseState();
     }
-    if (behavior === BEHAVIOR_STATES.SCATTER) {
-      scatterState({ ghost: ghost, dispatch: dispatch });
+    if (ghost.behavior === BEHAVIOR_STATES.SCATTER) {
+      scatterState(
+        { ghost: ghost, actions: actions, dispatch: dispatch },
+        pacman.x,
+        pacman.y
+      );
     }
-    if (behavior === BEHAVIOR_STATES.FRIGHTENED) {
+    if (ghost.behavior === BEHAVIOR_STATES.FRIGHTENED) {
       if (pacman.powerPelletTimeout != null)
         frightenedState(
-          { ghost: ghost, dispatch: dispatch },
+          { ghost: ghost, actions: actions, dispatch: dispatch },
           pacman.powerPelletTimeout
         );
     }
-    if (behavior === BEHAVIOR_STATES.EATEN) {
-      eatenState({ ghost: ghost, dispatch: dispatch });
+    if (ghost.behavior === BEHAVIOR_STATES.EATEN) {
+      eatenState({ ghost: ghost, actions: actions, dispatch: dispatch });
     }
   };
 }
