@@ -8,6 +8,7 @@ import {
 } from "~/consts/game";
 import { useGameloop } from "../useGameLoop";
 import { isCollidingWithMap } from "~/utils/isColliding";
+import { Direction } from "~/interfaces/slices";
 
 export function useMovement({
   gameStatus,
@@ -20,14 +21,14 @@ export function useMovement({
   state: string;
   x: number;
   y: number;
-  currentDirection: string;
+  currentDirection: Direction;
 }) {
   const speed = state === PACMAN_STATES.EATING_POWER_PELLET ? 4 : 2;
   const dispatch = useDispatch();
   const { getControlsDirection } = useControls();
 
-  const move = (inputDirection: string, previousDirection: string) => {
-    const tryMove = (direction: string) => {
+  const move = (inputDirection: Direction, previousDirection: Direction) => {
+    const tryMove = (direction: Direction) => {
       let newX = x;
       let newY = y;
       let collisionY = 0;

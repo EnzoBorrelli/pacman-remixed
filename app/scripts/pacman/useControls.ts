@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GAME_STATUS } from "~/consts/game";
+import { Direction } from "~/interfaces/slices";
 import { RootState } from "~/store";
 import { GameActions } from "~/store/gameSlice";
 
-type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT" | undefined;
+
 
 const DIRECTION_KEYS: Record<string, Direction> = {
   ArrowUp: "UP",
@@ -18,7 +19,7 @@ const DIRECTION_KEYS: Record<string, Direction> = {
 };
 
 export function useControls() {
-  const [heldDirection, setHeldDirection] = useState<Direction>(undefined);
+  const [heldDirection, setHeldDirection] = useState<Direction | undefined>(undefined);
   const dispatch = useDispatch();
   const status = useSelector((state: RootState) => state.game.status);
 

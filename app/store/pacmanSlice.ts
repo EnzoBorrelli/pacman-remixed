@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CHAR_SPAWNS, DIRECTIONS, PACMAN_STATES } from "~/consts/game";
-import { iPacman } from "~/interfaces/slices";
+import { iPacman, Direction } from "~/interfaces/slices";
 
 const initialState: iPacman = {
   x: CHAR_SPAWNS.PACMAN.x,
@@ -33,7 +33,7 @@ const pacmanSlice = createSlice({
     setState: (state, action: PayloadAction<string>) => {
       state.state = action.payload;
     },
-    setDirection: (state, action: PayloadAction<string>) => {
+    setDirection: (state, action: PayloadAction<Direction>) => {
       state.direction = action.payload;
     },
     setEatenPellets: (state) => {

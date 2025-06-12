@@ -12,11 +12,13 @@ export interface iGameState {
   pelletsArray: iPellet[];
 }
 
+export type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
+
 export interface iPacman {
   x: number;
   y: number;
   state: string;
-  direction: string;
+  direction: Direction;
   eatenPellets?: number;
   powerPelletTimeout?: number;
 }
@@ -25,7 +27,8 @@ export interface iGhost {
   x: number;
   y: number;
   state: string;
-  direction: string;
+  direction: Direction;
   name?: string;
-  behavior?:string
+  behavior?:string;
+  targetTile?:{x:number,y:number};
 }
