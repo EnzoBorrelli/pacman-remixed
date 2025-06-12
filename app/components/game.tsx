@@ -40,7 +40,7 @@ export default function Game() {
 
   //characters
   fraidCollisions(ghosts, pacman);
-  fraidManager({ state: pacman.state,ghosts:ghosts});
+  fraidManager({ state: pacman.state, ghosts: ghosts });
   useMovement({
     gameStatus: game.status,
     state: pacman.state,
@@ -48,6 +48,7 @@ export default function Game() {
     y: pacman.y,
     currentDirection: pacman.direction,
   });
+
 
   return (
     <Stage
