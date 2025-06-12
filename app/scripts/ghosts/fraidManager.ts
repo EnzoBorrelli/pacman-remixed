@@ -66,16 +66,16 @@ export function fraidManager({
       });
     } else {
       soundPlayer.StopSound("gameplay", "fright");
-      ghostsActions.forEach((ghost) =>
-        dispatch(ghost.setBehavior(BEHAVIOR_STATES.SCATTER))
+      ghostsActions.forEach((actions) =>
+        dispatch(actions.setBehavior(BEHAVIOR_STATES.SCATTER))
       );
     }
   }, [state]);
 
   useGameloop(() => {
-    ghostsActions.forEach((ghost, index) => {
+    ghostsActions.forEach((actions, index) => {
       if (ghosts[index].behavior != null)
-        behaviorManager(ghosts[index].behavior!, ghost);
+        behaviorManager(ghosts[index], actions);
     });
   });
 }
