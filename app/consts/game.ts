@@ -1,9 +1,11 @@
-export const DIRECTIONS = {
+import { Direction } from "~/interfaces/slices";
+
+
+export const DIRECTIONS : Record<string,Direction> = {
   UP: "UP",
   DOWN: "DOWN",
   LEFT: "LEFT",
-  RIGHT: "RIGHT",
-  NONE: undefined,
+  RIGHT: "RIGHT"
 };
 export const GAME_STATUS = {
   CINEMATIC: "CINEMATIC",
@@ -29,6 +31,13 @@ export const CHAR_SPAWNS = {
   CLYDE: { x: 240, y: 222 },
   FRUIT: { x: 208, y: 272 },
 };
+
+export const SCATTER_TILES = {
+  BLINKY:{x:28,y:0},
+  PINKY:{x:0,y:0},
+  INKY:{x:28,y:31},
+  CLYDE:{x:0,y:31},
+}
 
 export const MAP_TP_COORDS = {
   LEFT_IN: 12,
