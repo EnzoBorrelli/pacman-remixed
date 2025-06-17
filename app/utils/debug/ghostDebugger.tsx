@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DIRECTIONS, GHOST_STATES } from "~/consts/game";
+import { BEHAVIOR_STATES, DIRECTIONS } from "~/consts/game";
 import { ghostActions } from "~/interfaces/components";
-import { iGhost } from "~/interfaces/slices";
+import { Direction, iGhost } from "~/interfaces/slices";
 import { RootState } from "~/store";
 import {
   BlinkyActions,
@@ -23,10 +23,10 @@ export default function GhostDebugger() {
     useState<ghostActions>(BlinkyActions);
   const [colors,setColors] = useState(["bg-slate-800", "bg-slate-600", "ring-slate-400"]);
 
-  function handleStateChange(state: string) {
-    dispatch(ghostActions.setState(state));
+  function handleBehaviorChange(state: string) {
+    dispatch(ghostActions.setBehavior(state));
   }
-  function handleDirectionChange(dir: string) {
+  function handleDirectionChange(dir: Direction) {
     dispatch(ghostActions.setDirection(dir));
   }
 
@@ -90,40 +90,34 @@ export default function GhostDebugger() {
       <h3>States</h3>
       <ul className="grid grid-cols-3 gap-2 text-xs text-center">
         <li
-          onClick={() => handleStateChange(GHOST_STATES.IDLE)}
+          onClick={() => handleBehaviorChange(BEHAVIOR_STATES.CAGE)}
           className={`py-1 ${colors[1]} ring-1 ${colors[2]} hover:bg-slate-300 hover:ring-slate-50 hover:text-black hover:cursor-pointer`}
         >
-          {GHOST_STATES.IDLE}
+          {BEHAVIOR_STATES.CAGE}
         </li>
         <li
-          onClick={() => handleStateChange(GHOST_STATES.DEAD)}
+          onClick={() => handleBehaviorChange(BEHAVIOR_STATES.CHASE)}
           className={`py-1 ${colors[1]} ring-1 ${colors[2]} hover:bg-slate-300 hover:ring-slate-50 hover:text-black hover:cursor-pointer`}
         >
-          {GHOST_STATES.DEAD}
+          {BEHAVIOR_STATES.CHASE}
         </li>
         <li
-          onClick={() => handleStateChange(GHOST_STATES.MOVING)}
+          onClick={() => handleBehaviorChange(BEHAVIOR_STATES.EATEN)}
           className={`py-1 ${colors[1]} ring-1 ${colors[2]} hover:bg-slate-300 hover:ring-slate-50 hover:text-black hover:cursor-pointer`}
         >
-          {GHOST_STATES.MOVING}
+          {BEHAVIOR_STATES.EATEN}
         </li>
         <li
-          onClick={() => handleStateChange(GHOST_STATES.FRIGHTENED)}
+          onClick={() => handleBehaviorChange(BEHAVIOR_STATES.FRIGHTENED)}
           className={`py-1 col-span-3 ${colors[1]} ring-1 ${colors[2]} hover:bg-slate-300 hover:ring-slate-50 hover:text-black hover:cursor-pointer`}
         >
-          {GHOST_STATES.FRIGHTENED}
+          {BEHAVIOR_STATES.FRIGHTENED}
         </li>
         <li
-          onClick={() => handleStateChange(GHOST_STATES.RESTORING)}
+          onClick={() => handleBehaviorChange(BEHAVIOR_STATES.SCATTER)}
           className={`py-1 col-span-3 ${colors[1]} ring-1 ${colors[2]} hover:bg-slate-300 hover:ring-slate-50 hover:text-black hover:cursor-pointer`}
         >
-          {GHOST_STATES.RESTORING}
-        </li>
-        <li
-          onClick={() => handleStateChange(GHOST_STATES.EATING_PACMAN)}
-          className={`py-1 col-span-3 ${colors[1]} ring-1 ${colors[2]} hover:bg-slate-300 hover:ring-slate-50 hover:text-black hover:cursor-pointer`}
-        >
-          {GHOST_STATES.EATING_PACMAN}
+          {BEHAVIOR_STATES.SCATTER}
         </li>
       </ul>
       <h3>Directions</h3>
@@ -156,7 +150,7 @@ export default function GhostDebugger() {
       <h3>Current values</h3>
       <ul className="grid grid-cols-2 gap-2 text-xs text-center">
         <li>X: {focusedGhost.x}</li>
-        <li>Sta: {focusedGhost.state}</li>
+        <li>dir: {focusedGhost.direction}</li>
         <li>Y: {focusedGhost.y}</li>
         <li>beh: {focusedGhost.behavior}</li>
       </ul>
