@@ -17,6 +17,7 @@ import { collisionState, useBehaviorManager } from "./ghostUtils";
 import { useDispatch } from "react-redux";
 import { iGhost, iPacman } from "~/interfaces/slices";
 import { GameActions } from "~/store/gameSlice";
+import { moveToTarget } from "./moveToTarget";
 
 export const ghostsActions = [
   BlinkyActions,
@@ -39,7 +40,11 @@ export function fraidManager({
   useEffect(() => {
     ghosts.forEach((ghost) => {
       if (ghost.state === GHOST_STATES.DEAD) {
-        soundPlayer.PlaySound({ folder: "gameplay", audio: "eat_ghost",useCache:true });
+        soundPlayer.PlaySound({
+          folder: "gameplay",
+          audio: "eat_ghost",
+          useCache: true,
+        });
         dispatch(GameActions.increaseScore(COMBO_SCORES[combo]));
         setCombo(combo + 1);
       }
@@ -53,7 +58,7 @@ export function fraidManager({
   ]);
 
   useEffect(() => {
-    if (combo ===3) dispatch(GameActions.addLife());
+    if (combo === 3) dispatch(GameActions.addLife());
   }, [combo, dispatch]);
 
   useEffect(() => {
@@ -66,14 +71,16 @@ export function fraidManager({
       });
     } else {
       soundPlayer.StopSound("gameplay", "fright");
-      ghostsActions.forEach((actions) =>
-        dispatch(actions.setBehavior(BEHAVIOR_STATES.SCATTER))
-      );
+      ghostsActions.forEach((actions, index) => {
+        if (ghosts[index].behavior === GHOST_STATES.FRIGHTENED)
+          dispatch(actions.setBehavior(BEHAVIOR_STATES.SCATTER));
+      });
     }
   }, [state]);
 
   useGameloop(() => {
     ghostsActions.forEach((actions, index) => {
+      moveToTarget(ghosts[index], actions, dispatch);
       if (ghosts[index].behavior != null)
         behaviorManager(ghosts[index], actions);
     });
