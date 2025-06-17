@@ -47,3 +47,15 @@ export function isIntersection(x: number, y: number) {
   }
   return false;
 }
+
+export function getRandomTile() {
+  const maxY = COLLISION_MAP.length;
+  const maxX = COLLISION_MAP[0].length;
+
+  while (true) {
+    const x = Math.floor(Math.random() * maxX);
+    const y = Math.floor(Math.random() * maxY);
+
+    if (COLLISION_MAP[y][x] === 0) return { x, y };
+  }
+}
