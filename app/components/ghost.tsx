@@ -9,6 +9,7 @@ export default function Ghost({ x, y, state, direction, name }: iGhost) {
     direction: direction,
     name: name,
   });
+  const anchorX = state === GHOST_STATES.IDLE ? 0 : 0.3
 
   if (!animation || animation.textures.length === 0) return null;
 
@@ -20,7 +21,7 @@ export default function Ghost({ x, y, state, direction, name }: iGhost) {
       y={y}
       isPlaying={state !== GHOST_STATES.DEAD}
       animationSpeed={0.1}
-      anchor={{ x: 0, y: 0.25 }}
+      anchor={{ x: anchorX, y: 0.25 }}
     />
   );
 }
