@@ -5,8 +5,6 @@ import { Direction } from "~/interfaces/slices";
 import { RootState } from "~/store";
 import { GameActions } from "~/store/gameSlice";
 
-
-
 const DIRECTION_KEYS: Record<string, Direction> = {
   ArrowUp: "UP",
   ArrowDown: "DOWN",
@@ -19,7 +17,9 @@ const DIRECTION_KEYS: Record<string, Direction> = {
 };
 
 export function useControls() {
-  const [heldDirection, setHeldDirection] = useState<Direction | undefined>(undefined);
+  const [heldDirection, setHeldDirection] = useState<Direction | undefined>(
+    undefined
+  );
   const dispatch = useDispatch();
   const status = useSelector((state: RootState) => state.game.status);
 
@@ -43,7 +43,7 @@ export function useControls() {
     return () => {
       window.removeEventListener("keydown", handleKey);
     };
-  }, [handleKey,status]);
+  }, [handleKey, status]);
 
   const getControlsDirection = useCallback(
     () => heldDirection,

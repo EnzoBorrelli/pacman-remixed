@@ -27,11 +27,11 @@ export const ghostsActions = [
 ];
 
 export function fraidManager({
-  state,
   ghosts,
+  pacman,
 }: {
-  state: string;
   ghosts: iGhost[];
+  pacman: iPacman;
 }) {
   const behaviorManager = useBehaviorManager();
   const dispatch = useDispatch();
@@ -62,7 +62,7 @@ export function fraidManager({
   }, [combo, dispatch]);
 
   useEffect(() => {
-    if (state === PACMAN_STATES.EATING_POWER_PELLET) {
+    if (pacman.state === PACMAN_STATES.EATING_POWER_PELLET) {
       setCombo(0);
       soundPlayer.PlaySound({
         folder: "gameplay",
@@ -76,23 +76,14 @@ export function fraidManager({
           dispatch(actions.setBehavior(BEHAVIOR_STATES.SCATTER));
       });
     }
-  }, [state]);
+  }, [pacman.state]);
 
   useGameloop(() => {
     ghostsActions.forEach((actions, index) => {
+      collisionState(pacman, ghosts[index], actions, dispatch);
       moveToTarget(ghosts[index], actions, dispatch);
       if (ghosts[index].behavior != null)
-        behaviorManager(ghosts[index], actions);
+        behaviorManager(ghosts[index], actions, pacman);
     });
-  });
-}
-
-export function fraidCollisions(ghosts: iGhost[], pacman: iPacman) {
-  const dispatch = useDispatch();
-
-  useGameloop(() => {
-    ghosts.forEach((ghost, index) =>
-      collisionState(pacman, ghost, ghostsActions[index], dispatch)
-    );
   });
 }

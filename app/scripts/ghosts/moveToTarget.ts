@@ -21,18 +21,13 @@ export function moveToTarget(
 
   //check if aligned
   if (isAlignedToTile(ghost.x, ghost.y)) {
-    console.log("im aligned to tile");
     //check if intersction
     if (isIntersection(tileX, tileY)) {
-      console.log("im intersected");
       const validDirs = getValidDirections(tileX, tileY, ghostDirection); //get valid directions
 
       //if at least a direction is valid
+      //if target tile exist
       if (validDirs.length > 0 && ghost.targetTile) {
-        console.log("i have", validDirs.length, "directions available");
-        //if target tile exist
-        console.log("i have a target");
-
         const newDir = chooseDirection(
           tileX,
           tileY,
@@ -67,9 +62,8 @@ export function moveToTarget(
     if (nextTileY < MAP_TP_COORDS.LEFT_IN) {
       dispatch(actions.setGCoordinates({ x: MAP_TP_COORDS.RIGHT_OUT, nextY }));
     }
-    dispatch(actions.setGCoordinates({ x: nextX, y: nextY }));
-    dispatch(actions.setDirection(ghostDirection));
-    console.log("im dispatching");
+      dispatch(actions.setGCoordinates({ x: nextX, y: nextY }));
+      dispatch(actions.setDirection(ghostDirection));
   } else {
     console.log("im blocked in:", nextTileX, nextTileY);
   }

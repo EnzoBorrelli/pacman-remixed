@@ -1,17 +1,15 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   BEHAVIOR_STATES,
   CAGE_TILES,
   GAME_STATUS,
   GHOST_STATES,
-  PACMAN_STATES,
   SCATTER_TILES,
   SIZES,
 } from "~/consts/game";
 import { ghostActions } from "~/interfaces/components";
 import { iGhost, iPacman } from "~/interfaces/slices";
-import { RootState } from "~/store";
 import { GameActions } from "~/store/gameSlice";
 import { isCollidingWithObject } from "~/utils/isColliding";
 import { getRandomTile } from "./travelUtils";
@@ -27,7 +25,6 @@ function chaseState() {}
 function cageState({ ghost, actions, dispatch }: iState) {
   dispatch(actions.setTargetTile(CAGE_TILES[ghost.name!]));
   dispatch(actions.setState(GHOST_STATES.MOVING));
-  console.log("im in cage state");
   if (
     ghost.x / SIZES.TILE === ghost.targetTile?.x &&
     ghost.y / SIZES.TILE === ghost.targetTile?.y
@@ -38,7 +35,6 @@ function cageState({ ghost, actions, dispatch }: iState) {
 function scatterState({ ghost, actions, dispatch }: iState) {
   dispatch(actions.setState(GHOST_STATES.MOVING));
   dispatch(actions.setTargetTile(SCATTER_TILES[ghost.name!]));
-  console.log("im in scatter state");
 }
 
 function frightenedState(
@@ -66,9 +62,8 @@ function eatenState({ ghost, actions, dispatch }: iState) {
 }
 
 export function useBehaviorManager() {
-  const pacman = useSelector((state: RootState) => state.pacman);
   const dispatch = useDispatch();
-  return (ghost: iGhost, actions: ghostActions) => {
+  return (ghost: iGhost, actions: ghostActions, pacman: iPacman) => {
     if (ghost.behavior === BEHAVIOR_STATES.CAGE) {
       cageState({ ghost: ghost, actions: actions, dispatch: dispatch });
     }
@@ -105,8 +100,8 @@ export function collisionState(
     ghost.y
   );
 
-  if (isColliding && ghost.state !== GHOST_STATES.DEAD) {
-    if (pacman.state === PACMAN_STATES.EATING_POWER_PELLET) {
+  if (isColliding) {
+    if (ghost.behavior === BEHAVIOR_STATES.FRIGHTENED) {
       dispatch(ghostActions.setBehavior(BEHAVIOR_STATES.EATEN));
     } else {
       dispatch(GameActions.setStatus(GAME_STATUS.LOSE_LIFE));

@@ -1,11 +1,7 @@
 import { PacmanActions } from "~/store/pacmanSlice";
 import { useControls } from "./useControls";
 import { useDispatch } from "react-redux";
-import {
-  GAME_STATUS,
-  MAP_TP_COORDS,
-  PACMAN_STATES,
-} from "~/consts/game";
+import { GAME_STATUS, MAP_TP_COORDS, PACMAN_STATES } from "~/consts/game";
 import { useGameloop } from "../useGameLoop";
 import { isCollidingWithMap } from "~/utils/isColliding";
 import { Direction } from "~/interfaces/slices";
@@ -53,6 +49,7 @@ export function useMovement({
         default:
           break;
       }
+
       if (!isCollidingWithMap(newX + collisionX, newY + collisionY)) {
         dispatch(PacmanActions.setCoordinates({ x: newX, y: newY }));
         dispatch(PacmanActions.setDirection(direction));
@@ -67,6 +64,7 @@ export function useMovement({
 
   useGameloop(() => {
     const inputDirection = getControlsDirection();
+    console.log("direction:", inputDirection);
     if (
       [GAME_STATUS.STARTED, GAME_STATUS.CONTINUE, GAME_STATUS.PLAYING].includes(
         gameStatus
