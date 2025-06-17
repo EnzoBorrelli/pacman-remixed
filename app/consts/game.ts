@@ -25,18 +25,24 @@ export const SIZES = {
 
 export const CHAR_SPAWNS = {
   PACMAN: { x: 208, y: 368 },
-  BLINKY: { x: 208, y: 174 },
-  PINKY: { x: 208, y: 222 },
-  INKY: { x: 176, y: 222 },
-  CLYDE: { x: 240, y: 222 },
+  BLINKY: { x: 208, y: 176 },
+  PINKY: { x: 208, y: 224 },
+  INKY: { x: 176, y: 224 },
+  CLYDE: { x: 240, y: 224 },
   FRUIT: { x: 208, y: 272 },
 };
 
-export const SCATTER_TILES = {
-  BLINKY:{x:28,y:0},
-  PINKY:{x:0,y:0},
-  INKY:{x:28,y:31},
-  CLYDE:{x:0,y:31},
+export const SCATTER_TILES : Record<string,{x:number,y:number}> = {
+  blinky:{x:28,y:0},
+  pinky:{x:0,y:0},
+  inky:{x:28,y:31},
+  clyde:{x:0,y:31},
+}
+export const CAGE_TILES: Record<string,{x:number,y:number}>  = {
+  blinky:{x:15,y:11},
+  pinky:{x:13,y:11},
+  inky:{x:16,y:11},
+  clyde:{x:12,y:11},
 }
 
 export const MAP_TP_COORDS = {
@@ -65,6 +71,7 @@ export const GHOST_STATES = {
 };
 
 export const BEHAVIOR_STATES = {
+  CAGE:"CAGE",
   CHASE: "CHASE",
   SCATTER: "SCATTER",
   EATEN: "EATEN",
