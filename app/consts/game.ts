@@ -71,6 +71,7 @@ export const GHOST_STATES = {
 };
 
 export const BEHAVIOR_STATES = {
+  IDLE: "IDLE",
   CAGE:"CAGE",
   CHASE: "CHASE",
   SCATTER: "SCATTER",
