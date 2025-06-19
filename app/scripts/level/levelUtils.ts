@@ -29,7 +29,7 @@ export function PreloadLevelSounds() {
   }, []);
 }
 function cinematicToGame(dispatch: Dispatch) {
-  resetLevel(dispatch)
+  resetLevel(dispatch);
   soundPlayer.PlaySound({ folder: "gameplay", audio: "start", useCache: true });
   const timeout = setTimeout(() => {
     dispatch(GameActions.setStatus(GAME_STATUS.STARTED));
@@ -43,6 +43,20 @@ function resetLevel(dispatch: Dispatch) {
   dispatch(PinkyActions.reset());
   dispatch(InkyActions.reset());
   dispatch(ClydeActions.reset());
+}
+function switchGhosts(dispatch: Dispatch) {
+  const timeout = setTimeout(() => {
+    soundPlayer.PlaySound({
+      folder: "gameplay",
+      audio: "eat_ghost",
+      useCache: true,
+    });
+    dispatch(BlinkyActions.setBehavior("CHASE"));
+    dispatch(PinkyActions.setBehavior("CHASE"));
+    dispatch(InkyActions.setBehavior("CHASE"));
+    dispatch(ClydeActions.setBehavior("CHASE"));
+  }, 10000);
+  return () => clearTimeout(timeout);
 }
 
 function loseLife(dispatch: Dispatch) {
@@ -71,6 +85,7 @@ export function SwitchGameStatus(status: string) {
     if (status === GAME_STATUS.CINEMATIC) cinematicToGame(dispatch);
     if (status === GAME_STATUS.STARTED || status === GAME_STATUS.CONTINUE)
       resetLevel(dispatch);
+    if (status === GAME_STATUS.PLAYING) switchGhosts(dispatch);
     if (status === GAME_STATUS.LOSE_LIFE) loseLife(dispatch);
     if (status === GAME_STATUS.OVER) gameOver(dispatch);
     if (status === GAME_STATUS.LEVEL_WON) levelWon(dispatch);
