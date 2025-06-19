@@ -4,7 +4,7 @@ import { iPellet } from "~/interfaces/components";
 import { iGameState } from "~/interfaces/slices";
 
 const initialState: iGameState = {
-  status: GAME_STATUS.STARTED,
+  status: GAME_STATUS.CINEMATIC,
   score: 0,
   highScore: 0,
   level: 0,
