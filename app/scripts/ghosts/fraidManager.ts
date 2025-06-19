@@ -4,7 +4,6 @@ import {
   GHOST_STATES,
   PACMAN_STATES,
 } from "~/consts/game";
-import { useGameloop } from "../useGameLoop";
 import {
   BlinkyActions,
   ClydeActions,
@@ -14,10 +13,10 @@ import {
 import soundPlayer from "~/utils/soundPlayer";
 import { useEffect, useState } from "react";
 import { collisionState, useBehaviorManager } from "./ghostUtils";
-import { useDispatch } from "react-redux";
 import { iGhost, iPacman } from "~/interfaces/slices";
 import { GameActions } from "~/store/gameSlice";
 import { moveToTarget } from "./moveToTarget";
+import { Dispatch } from "@reduxjs/toolkit";
 
 export const ghostsActions = [
   BlinkyActions,
@@ -26,15 +25,17 @@ export const ghostsActions = [
   ClydeActions,
 ];
 
-export function fraidManager({
+function Attach({
   ghosts,
   pacman,
+  dispatch,
+  gameStatus,
 }: {
   ghosts: iGhost[];
   pacman: iPacman;
+  dispatch: Dispatch;
+  gameStatus: string;
 }) {
-  const behaviorManager = useBehaviorManager();
-  const dispatch = useDispatch();
   const [combo, setCombo] = useState(0);
 
   useEffect(() => {
@@ -78,12 +79,41 @@ export function fraidManager({
     }
   }, [pacman.state]);
 
-  useGameloop(() => {
-    ghostsActions.forEach((actions, index) => {
-      collisionState(pacman, ghosts[index], actions, dispatch);
-      moveToTarget(ghosts[index], actions, dispatch);
-      if (ghosts[index].behavior != null)
-        behaviorManager(ghosts[index], actions, pacman);
-    });
+  useEffect(() => {
+    if (gameStatus !== "CINEMATIC") {
+      ghosts.forEach((ghost, index) => {
+        if (ghost.behavior === BEHAVIOR_STATES.IDLE) {
+          dispatch(ghostsActions[index].setBehavior(BEHAVIOR_STATES.CAGE));
+        }
+      });
+    }
+  }, [
+    gameStatus,
+    ghosts[0].state,
+    ghosts[1].state,
+    ghosts[2].state,
+    ghosts[3].state,
+    dispatch,
+  ]);
+}
+
+function Update({
+  ghosts,
+  pacman,
+  dispatch,
+}: {
+  ghosts: iGhost[];
+  pacman: iPacman;
+  dispatch: Dispatch;
+}) {
+  const behaviorManager = useBehaviorManager();
+
+  ghostsActions.forEach((actions, index) => {
+    collisionState(pacman, ghosts[index], actions, dispatch);
+    moveToTarget(ghosts[index], actions, dispatch);
+    if (ghosts[index].behavior != null)
+      behaviorManager(ghosts[index], actions, pacman, dispatch);
   });
 }
+
+export default { Attach, Update };

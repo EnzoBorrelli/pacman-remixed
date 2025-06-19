@@ -12,7 +12,7 @@ import {
 import { PacmanActions } from "~/store/pacmanSlice";
 import soundPlayer from "~/utils/soundPlayer";
 
-export function usePreloadLevelSounds() {
+export function PreloadLevelSounds() {
   useEffect(() => {
     soundPlayer.PreloadSound({ folder: "gameplay", audio: "eat_dot_0" });
     soundPlayer.PreloadSound({ folder: "gameplay", audio: "eat_dot_1" });
@@ -20,10 +20,17 @@ export function usePreloadLevelSounds() {
     soundPlayer.PreloadSound({ folder: "gameplay", audio: "eat_ghost" });
     soundPlayer.PreloadSound({ folder: "gameplay", audio: "death" });
     soundPlayer.PreloadSound({ folder: "gameplay", audio: "fright" });
+    soundPlayer.PreloadSound({ folder: "gameplay", audio: "start" });
+    soundPlayer.PreloadSound({ folder: "gameplay", audio: "siren0" });
+    soundPlayer.PreloadSound({ folder: "gameplay", audio: "siren1" });
+    soundPlayer.PreloadSound({ folder: "gameplay", audio: "siren2" });
+    soundPlayer.PreloadSound({ folder: "gameplay", audio: "siren3" });
+    soundPlayer.PreloadSound({ folder: "gameplay", audio: "siren4" });
   }, []);
 }
 function cinematicToGame(dispatch: Dispatch) {
-  soundPlayer.PlaySound({ folder: "gameplay", audio: "start" });
+  resetLevel(dispatch)
+  soundPlayer.PlaySound({ folder: "gameplay", audio: "start", useCache: true });
   const timeout = setTimeout(() => {
     dispatch(GameActions.setStatus(GAME_STATUS.STARTED));
   }, 4000);
@@ -58,7 +65,7 @@ function levelWon(dispatch: Dispatch) {
   dispatch(GameActions.setStatus(GAME_STATUS.CINEMATIC));
 }
 
-export function useGameStatus(status: string) {
+export function SwitchGameStatus(status: string) {
   const dispatch = useDispatch();
   useEffect(() => {
     if (status === GAME_STATUS.CINEMATIC) cinematicToGame(dispatch);

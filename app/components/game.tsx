@@ -1,21 +1,17 @@
 import { Stage } from "@pixi/react";
 import Level from "./level";
 import { GAME_STATUS, SIZES } from "~/consts/game";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "~/store";
 import Ghost from "./ghost";
 import Pacman from "./pacman";
-import { useMovement } from "~/scripts/pacman/useMovement";
 import { usePelletCollision } from "~/scripts/objects/pelletUtils";
-import { useFruitCollision } from "~/scripts/objects/fruitUtils";
-import {
-  useGameStatus,
-  usePreloadLevelSounds,
-} from "~/scripts/level/levelUtils";
 import CinematicStart from "~/ui/level_ui/cinematicStart";
-import {fraidManager } from "~/scripts/ghosts/fraidManager";
+import { useLoop, useSetup } from "~/scripts/game/gameManager";
+import { useControls } from "~/scripts/pacman/useControls";
 
 export default function Game() {
+  const dispatch = useDispatch();
   const game = useSelector((state: RootState) => state.game);
   const pacman = useSelector((state: RootState) => state.pacman);
   const blinky = useSelector((state: RootState) => state.blinky);
@@ -23,12 +19,18 @@ export default function Game() {
   const pinky = useSelector((state: RootState) => state.pinky);
   const clyde = useSelector((state: RootState) => state.clyde);
   const ghosts = [blinky, inky, pinky, clyde];
+  const { getControlsDirection } = useControls();
+  const inputDirection = getControlsDirection();
 
-  //level
-  usePreloadLevelSounds();
-  useGameStatus(game.status);
+  //setup
+  useSetup({
+    pacman: pacman,
+    ghosts: ghosts,
+    game: game,
+    dispatch: dispatch,
+  });
 
-  //objects
+  //pellets
   const currentPellets = usePelletCollision(
     pacman.x,
     pacman.y,
@@ -36,17 +38,17 @@ export default function Game() {
     game.status,
     ghosts
   );
-  useFruitCollision(game, pacman.x, pacman.y, pacman.eatenPellets!);
 
-  //characters
-  fraidManager({ pacman: pacman, ghosts: ghosts });
-  useMovement({
-    gameStatus: game.status,
-    state: pacman.state,
-    x: pacman.x,
-    y: pacman.y,
-    currentDirection: pacman.direction,
-  });
+  //loop
+  useLoop(
+    {
+      pacman: pacman,
+      ghosts: ghosts,
+      game: game,
+      dispatch: dispatch,
+    },
+    inputDirection
+  );
 
   return (
     <Stage
