@@ -15,7 +15,7 @@ const createGhostSlice = (
     state: GHOST_STATES.IDLE,
     direction: spawn_direction,
     name: name,
-    behavior: BEHAVIOR_STATES.CAGE,
+    behavior: BEHAVIOR_STATES.IDLE,
     targetTile: targetTile,
   };
   return createSlice({
@@ -27,7 +27,7 @@ const createGhostSlice = (
         state.y = spawn_y;
         state.state = GHOST_STATES.IDLE;
         state.direction = spawn_direction;
-        state.behavior = BEHAVIOR_STATES.CAGE;
+        state.behavior = BEHAVIOR_STATES.IDLE;
         state.targetTile = targetTile;
       },
       setGCoordinates: (state, action) => {
