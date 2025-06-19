@@ -20,8 +20,8 @@ type iState = {
   dispatch: Dispatch;
 };
 
-function chaseState({ ghost, actions, dispatch }: iState, pacman: iPacman) {
-  const target = getTarget(pacman, ghost);
+function chaseState({ ghost, actions, dispatch }: iState, pacman: iPacman,blinky:iGhost) {
+  const target = getTarget(pacman, ghost,blinky);
   dispatch(actions.setTargetTile(target));
 }
 
@@ -69,7 +69,8 @@ export function useBehaviorManager() {
     ghost: iGhost,
     actions: ghostActions,
     pacman: iPacman,
-    dispatch: Dispatch
+    dispatch: Dispatch,
+    blinky:iGhost
   ) => {
     if (ghost.behavior === BEHAVIOR_STATES.CAGE) {
       cageState({ ghost: ghost, actions: actions, dispatch: dispatch });
@@ -77,7 +78,7 @@ export function useBehaviorManager() {
     if (ghost.behavior === BEHAVIOR_STATES.CHASE) {
       chaseState(
         { ghost: ghost, actions: actions, dispatch: dispatch },
-        pacman
+        pacman,blinky
       );
     }
     if (ghost.behavior === BEHAVIOR_STATES.SCATTER) {
