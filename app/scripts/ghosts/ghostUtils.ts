@@ -1,5 +1,4 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
 import {
   BEHAVIOR_STATES,
   CAGE_TILES,
@@ -13,6 +12,7 @@ import { iGhost, iPacman } from "~/interfaces/slices";
 import { GameActions } from "~/store/gameSlice";
 import { isCollidingWithObject } from "~/utils/isColliding";
 import { getRandomTile } from "./travelUtils";
+import { getTarget } from "./chaseTargetManager";
 
 type iState = {
   ghost: iGhost;
@@ -20,7 +20,10 @@ type iState = {
   dispatch: Dispatch;
 };
 
-function chaseState() {}
+function chaseState({ ghost, actions, dispatch }: iState, pacman: iPacman) {
+  const target = getTarget(pacman, ghost);
+  dispatch(actions.setTargetTile(target));
+}
 
 function cageState({ ghost, actions, dispatch }: iState) {
   dispatch(actions.setTargetTile(CAGE_TILES[ghost.name!]));
@@ -62,13 +65,20 @@ function eatenState({ ghost, actions, dispatch }: iState) {
 }
 
 export function useBehaviorManager() {
-  const dispatch = useDispatch();
-  return (ghost: iGhost, actions: ghostActions, pacman: iPacman) => {
+  return (
+    ghost: iGhost,
+    actions: ghostActions,
+    pacman: iPacman,
+    dispatch: Dispatch
+  ) => {
     if (ghost.behavior === BEHAVIOR_STATES.CAGE) {
       cageState({ ghost: ghost, actions: actions, dispatch: dispatch });
     }
     if (ghost.behavior === BEHAVIOR_STATES.CHASE) {
-      chaseState();
+      chaseState(
+        { ghost: ghost, actions: actions, dispatch: dispatch },
+        pacman
+      );
     }
     if (ghost.behavior === BEHAVIOR_STATES.SCATTER) {
       scatterState({ ghost: ghost, actions: actions, dispatch: dispatch });
@@ -103,7 +113,7 @@ export function collisionState(
   if (isColliding) {
     if (ghost.behavior === BEHAVIOR_STATES.FRIGHTENED) {
       dispatch(ghostActions.setBehavior(BEHAVIOR_STATES.EATEN));
-    } else {
+    } else if (ghost.behavior !== BEHAVIOR_STATES.EATEN) {
       dispatch(GameActions.setStatus(GAME_STATUS.LOSE_LIFE));
     }
   }
