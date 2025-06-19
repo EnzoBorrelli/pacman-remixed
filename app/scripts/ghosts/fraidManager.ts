@@ -112,7 +112,7 @@ function Update({
     collisionState(pacman, ghosts[index], actions, dispatch);
     moveToTarget(ghosts[index], actions, dispatch);
     if (ghosts[index].behavior != null)
-      behaviorManager(ghosts[index], actions, pacman, dispatch);
+      behaviorManager(ghosts[index], actions, pacman, dispatch,ghosts[0]);
   });
 }
 
