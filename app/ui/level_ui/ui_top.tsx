@@ -1,17 +1,26 @@
-import { Stage, Text } from "@pixi/react";
+import { Container, Stage, Text } from "@pixi/react";
+import { useNavigate } from "@remix-run/react";
 import { TextStyle } from "pixi.js";
 import { useSelector } from "react-redux";
 import { SIZES } from "~/consts/game";
 import { RootState } from "~/store";
+import soundPlayer from "~/utils/soundPlayer";
 
 export default function UITop() {
   const game = useSelector((state: RootState) => state.game);
-  const textStyle = new TextStyle({
-    fontFamily: "PacFont",
-    fontSize: 12,
-    fill: "white",
-    align: "center",
-  });
+  const navigate = useNavigate();
+  function handleClick() {
+    navigate("/");
+    soundPlayer.PlaySound({ folder: "ui", audio: "menu" });
+  }
+
+  const textStyle = (color: string) =>
+    new TextStyle({
+      fontFamily: "PacFont",
+      fontSize: 12,
+      fill: color,
+      align: "center",
+    });
   return (
     <Stage
       width={SIZES.MAP.WIDTH}
@@ -22,28 +31,47 @@ export default function UITop() {
         autoDensity: true,
       }}
     >
-      <Text text="SCORE" x={60} y={20} anchor={0.5} style={textStyle} />
+      <Text
+        text="SCORE"
+        x={60}
+        y={20}
+        anchor={0.5}
+        style={textStyle("white")}
+      />
       <Text
         text={`${game.score}`}
         x={60}
         y={40}
         anchor={0.5}
-        style={textStyle}
+        style={textStyle("white")}
       />
       <Text
         text="HIGH SCORE"
         x={SIZES.MAP.WIDTH / 2}
         y={20}
         anchor={0.5}
-        style={textStyle}
+        style={textStyle("white")}
       />
       <Text
         text={`${game.highScore}`}
-        x={SIZES.MAP.WIDTH /2}
+        x={SIZES.MAP.WIDTH / 2}
         y={40}
         anchor={0.5}
-        style={textStyle}
+        style={textStyle("white")}
       />
+      <Container
+        interactive={true}
+        pointertap={handleClick}
+        cursor="pointer"
+      >
+        <Text
+          text="MENU"
+          x={SIZES.MAP.WIDTH - 60}
+          y={20}
+          anchor={0.5}
+          style={textStyle("orange")}
+        />
+      </Container>
     </Stage>
   );
 }
