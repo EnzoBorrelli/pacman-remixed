@@ -4,6 +4,7 @@ import {
   CAGE_TILES,
   GAME_STATUS,
   GHOST_STATES,
+  PACMAN_STATES,
   SCATTER_TILES,
   SIZES,
 } from "~/consts/game";
@@ -20,8 +21,12 @@ type iState = {
   dispatch: Dispatch;
 };
 
-function chaseState({ ghost, actions, dispatch }: iState, pacman: iPacman,blinky:iGhost) {
-  const target = getTarget(pacman, ghost,blinky);
+function chaseState(
+  { ghost, actions, dispatch }: iState,
+  pacman: iPacman,
+  blinky: iGhost
+) {
+  const target = getTarget(pacman, ghost, blinky);
   dispatch(actions.setTargetTile(target));
 }
 
@@ -70,7 +75,7 @@ export function useBehaviorManager() {
     actions: ghostActions,
     pacman: iPacman,
     dispatch: Dispatch,
-    blinky:iGhost
+    blinky: iGhost
   ) => {
     if (ghost.behavior === BEHAVIOR_STATES.CAGE) {
       cageState({ ghost: ghost, actions: actions, dispatch: dispatch });
@@ -78,7 +83,8 @@ export function useBehaviorManager() {
     if (ghost.behavior === BEHAVIOR_STATES.CHASE) {
       chaseState(
         { ghost: ghost, actions: actions, dispatch: dispatch },
-        pacman,blinky
+        pacman,
+        blinky
       );
     }
     if (ghost.behavior === BEHAVIOR_STATES.SCATTER) {
@@ -114,7 +120,10 @@ export function collisionState(
   if (isColliding) {
     if (ghost.behavior === BEHAVIOR_STATES.FRIGHTENED) {
       dispatch(ghostActions.setBehavior(BEHAVIOR_STATES.EATEN));
-    } else if (ghost.behavior !== BEHAVIOR_STATES.EATEN) {
+    } else if (
+      ghost.behavior !== BEHAVIOR_STATES.EATEN &&
+      pacman.state !== PACMAN_STATES.DYING
+    ) {
       dispatch(GameActions.setStatus(GAME_STATUS.LOSE_LIFE));
     }
   }
