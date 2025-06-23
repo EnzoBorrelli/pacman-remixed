@@ -1,4 +1,5 @@
 import { Dispatch } from "@reduxjs/toolkit";
+import { NavigateFunction } from "@remix-run/react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { GAME_STATUS, PACMAN_STATES } from "~/consts/game";
@@ -44,20 +45,6 @@ function resetLevel(dispatch: Dispatch) {
   dispatch(InkyActions.reset());
   dispatch(ClydeActions.reset());
 }
-function switchGhosts(dispatch: Dispatch) {
-  const timeout = setTimeout(() => {
-    soundPlayer.PlaySound({
-      folder: "gameplay",
-      audio: "eat_ghost",
-      useCache: true,
-    });
-    dispatch(BlinkyActions.setBehavior("CHASE"));
-    dispatch(PinkyActions.setBehavior("CHASE"));
-    dispatch(InkyActions.setBehavior("CHASE"));
-    dispatch(ClydeActions.setBehavior("CHASE"));
-  }, 10000);
-  return () => clearTimeout(timeout);
-}
 
 function loseLife(dispatch: Dispatch) {
   soundPlayer.PlaySound({ folder: "gameplay", audio: "death", useCache: true });
@@ -69,7 +56,8 @@ function loseLife(dispatch: Dispatch) {
   return () => clearTimeout(timeout);
 }
 
-function gameOver(dispatch: Dispatch) {
+function gameOver(dispatch: Dispatch,navigate:NavigateFunction) {
+  navigate("/")
   dispatch(GameActions.gameReset());
   dispatch(GameActions.setStatus(GAME_STATUS.CINEMATIC));
 }
@@ -79,15 +67,17 @@ function levelWon(dispatch: Dispatch) {
   dispatch(GameActions.setStatus(GAME_STATUS.CINEMATIC));
 }
 
-export function SwitchGameStatus(status: string) {
+export function SwitchGameStatus(status: string,navigate:NavigateFunction) {
   const dispatch = useDispatch();
   useEffect(() => {
     if (status === GAME_STATUS.CINEMATIC) cinematicToGame(dispatch);
-    if (status === GAME_STATUS.STARTED || status === GAME_STATUS.CONTINUE)
+    if (status === GAME_STATUS.STARTED) {
+      dispatch(PacmanActions.resetPellets());
       resetLevel(dispatch);
-    if (status === GAME_STATUS.PLAYING) switchGhosts(dispatch);
+    }
+    if (status === GAME_STATUS.CONTINUE) resetLevel(dispatch);
     if (status === GAME_STATUS.LOSE_LIFE) loseLife(dispatch);
-    if (status === GAME_STATUS.OVER) gameOver(dispatch);
+    if (status === GAME_STATUS.OVER) gameOver(dispatch,navigate);
     if (status === GAME_STATUS.LEVEL_WON) levelWon(dispatch);
   }, [status, dispatch]);
 }
