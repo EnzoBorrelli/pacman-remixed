@@ -17,12 +17,17 @@ export default function Index() {
 
   useEffect(() => {
     if (location.pathname === "/") {
-      soundPlayer.StopAllSounds();
+      soundPlayer.StopSound("gameplay","start");
     }
   }, [location.pathname]);
 
   const hoverSound = () => {
     soundPlayer.PlaySound({ folder: "ui", audio: "hover" });
+  };
+
+  const onClick = (path: string) => {
+    navigate(path);
+    soundPlayer.PlaySound({ folder: "ui", audio: "select" });
   };
   return (
     <main className="relative flex flex-col items-center pt-20 h-screen text-white bg-slate-950">
@@ -35,7 +40,7 @@ export default function Index() {
           <span className="opacity-0 group-hover:opacity-100">&gt;</span>
           <button
             className="group-hover:text-yellow-500 group-hover:text-stroke-3"
-            onClick={() => navigate("/play")}
+            onClick={() => onClick("/play")}
           >
             PLAY
           </button>
@@ -47,7 +52,7 @@ export default function Index() {
           <span className="opacity-0 group-hover:opacity-100">&gt;</span>
           <button
             className="group-hover:text-yellow-500 group-hover:text-stroke-3"
-            onClick={() => navigate("/characters")}
+            onClick={() => onClick("/characters")}
           >
             CHARACTERS
           </button>
@@ -59,7 +64,7 @@ export default function Index() {
           <span className="opacity-0 group-hover:opacity-100">&gt;</span>
           <button
             className="group-hover:text-yellow-500 group-hover:text-stroke-3"
-            onClick={() => navigate("/credits")}
+            onClick={() => onClick("/credits")}
           >
             CREDITS
           </button>
