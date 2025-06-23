@@ -20,7 +20,6 @@ const pacmanSlice = createSlice({
       state.y = CHAR_SPAWNS.PACMAN.y;
       state.state = PACMAN_STATES.IDLE;
       state.direction = DIRECTIONS.LEFT;
-      state.eatenPellets = 0;
       state.powerPelletTimeout = 800; // Reset power pellet timeout
     },
     setCoordinates: (
@@ -38,6 +37,9 @@ const pacmanSlice = createSlice({
     },
     setEatenPellets: (state) => {
       state.eatenPellets = state.eatenPellets! + 1;
+    },
+    resetPellets: (state) => {
+      state.eatenPellets = 0;
     },
     decreasePowerPelletTimeout: (state) => {
       state.powerPelletTimeout! -= 1;
