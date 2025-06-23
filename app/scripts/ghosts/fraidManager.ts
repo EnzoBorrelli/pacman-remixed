@@ -11,7 +11,7 @@ import {
   PinkyActions,
 } from "~/store/ghostSlices";
 import soundPlayer from "~/utils/soundPlayer";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { collisionState, useBehaviorManager } from "./ghostUtils";
 import { iGhost, iPacman } from "~/interfaces/slices";
 import { GameActions } from "~/store/gameSlice";
@@ -37,6 +37,34 @@ function Attach({
   gameStatus: string;
 }) {
   const [combo, setCombo] = useState(0);
+  const siren = useRef<Howl | null>(null);
+  const sirenName = useRef<string>("");
+
+  useEffect(() => {
+    if (!(pacman.state !== PACMAN_STATES.EATING_POWER_PELLET && gameStatus === "PLAYING")) {
+      siren.current?.stop();
+      siren.current = null;
+      sirenName.current = "";
+      return;
+    }
+    let _siren = "siren0";
+    if (!pacman.eatenPellets) return;
+    if (pacman.eatenPellets > 210) _siren = "siren4";
+    else if (pacman.eatenPellets > 170) _siren = "siren3";
+    else if (pacman.eatenPellets > 120) _siren = "siren2";
+    else if (pacman.eatenPellets > 60) _siren = "siren1";
+
+    if (sirenName.current !== _siren) {
+      sirenName.current = _siren;
+      siren.current?.stop();
+      siren.current = soundPlayer.PlaySound({
+        folder: "gameplay",
+        audio: _siren,
+        loop: true,
+        useCache: true,
+      });
+    }
+  }, [pacman.state, pacman.eatenPellets]);
 
   useEffect(() => {
     ghosts.forEach((ghost) => {
@@ -112,7 +140,7 @@ function Update({
     collisionState(pacman, ghosts[index], actions, dispatch);
     moveToTarget(ghosts[index], actions, dispatch);
     if (ghosts[index].behavior != null)
-      behaviorManager(ghosts[index], actions, pacman, dispatch,ghosts[0]);
+      behaviorManager(ghosts[index], actions, pacman, dispatch, ghosts[0]);
   });
 }
 
