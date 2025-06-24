@@ -1,10 +1,13 @@
 import { Container, Stage, Text } from "@pixi/react";
+import { useLocation } from "@remix-run/react";
 import { TextStyle } from "pixi.js";
+import { useEffect } from "react";
 import Ghost from "~/components/ghost";
 import Pacman from "~/components/pacman";
 import Pellet from "~/components/pellet";
 import { DIRECTIONS, GHOST_STATES, PACMAN_STATES, SIZES } from "~/consts/game";
 import UITop from "~/ui/level_ui/ui_top";
+import soundPlayer from "~/utils/soundPlayer";
 
 const ghosts = [
   {
@@ -54,6 +57,17 @@ const baseTextStyle = (color: string, size = 16) =>
   });
 
 export default function Characters() {
+  const location = useLocation();
+  
+    useEffect(() => {
+      if (location.pathname === "/characters") {
+        soundPlayer.PlaySound({
+          folder: "gameplay",
+          audio: "intermission",
+          volume: 0.2,
+        });
+      }
+    }, [location.pathname]);
   return (
     <main className="relative flex flex-col items-center justify-center h-screen text-white bg-slate-950">
       <UITop />
