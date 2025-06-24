@@ -20,7 +20,6 @@ export function useControls() {
   const [heldDirection, setHeldDirection] = useState<Direction | undefined>(
     undefined
   );
-  const dispatch = useDispatch();
   const status = useSelector((state: RootState) => state.game.status);
 
   const handleKey = useCallback((event: KeyboardEvent) => {
@@ -30,7 +29,6 @@ export function useControls() {
     setHeldDirection((current) => {
       return current !== direction ? direction : current;
     });
-    dispatch(GameActions.setStatus(GAME_STATUS.PLAYING));
   }, []);
 
   useEffect(() => {

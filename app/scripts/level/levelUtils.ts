@@ -34,7 +34,7 @@ function cinematicToGame(dispatch: Dispatch) {
   soundPlayer.PlaySound({ folder: "gameplay", audio: "start", useCache: true });
   const timeout = setTimeout(() => {
     dispatch(GameActions.setStatus(GAME_STATUS.STARTED));
-  }, 4000);
+  }, 6000);
   return () => clearTimeout(timeout);
 }
 
@@ -44,6 +44,11 @@ function resetLevel(dispatch: Dispatch) {
   dispatch(PinkyActions.reset());
   dispatch(InkyActions.reset());
   dispatch(ClydeActions.reset());
+}
+
+function playLevel(dispatch:Dispatch){
+  resetLevel(dispatch)
+  dispatch(GameActions.setStatus(GAME_STATUS.PLAYING));
 }
 
 function loseLife(dispatch: Dispatch) {
@@ -73,9 +78,9 @@ export function SwitchGameStatus(status: string,navigate:NavigateFunction) {
     if (status === GAME_STATUS.CINEMATIC) cinematicToGame(dispatch);
     if (status === GAME_STATUS.STARTED) {
       dispatch(PacmanActions.resetPellets());
-      resetLevel(dispatch);
+      playLevel(dispatch);
     }
-    if (status === GAME_STATUS.CONTINUE) resetLevel(dispatch);
+    if (status === GAME_STATUS.CONTINUE) playLevel(dispatch);
     if (status === GAME_STATUS.LOSE_LIFE) loseLife(dispatch);
     if (status === GAME_STATUS.OVER) gameOver(dispatch,navigate);
     if (status === GAME_STATUS.LEVEL_WON) levelWon(dispatch);
