@@ -41,7 +41,12 @@ function Attach({
   const sirenName = useRef<string>("");
 
   useEffect(() => {
-    if (!(pacman.state !== PACMAN_STATES.EATING_POWER_PELLET && gameStatus === "PLAYING")) {
+    if (
+      !(
+        pacman.state !== PACMAN_STATES.EATING_POWER_PELLET &&
+        gameStatus === "PLAYING"
+      )
+    ) {
       siren.current?.stop();
       siren.current = null;
       sirenName.current = "";
@@ -87,7 +92,15 @@ function Attach({
   ]);
 
   useEffect(() => {
-    if (combo === 3) dispatch(GameActions.addLife());
+    if (combo > 0) {
+      const timeout = setTimeout(() => {
+        setCombo(0);
+      }, 2000);
+    }
+    if (combo === 3) {
+      setCombo(0);
+      dispatch(GameActions.addLife());
+    }
   }, [combo, dispatch]);
 
   useEffect(() => {
