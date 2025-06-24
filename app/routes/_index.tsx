@@ -1,6 +1,8 @@
 import type { MetaFunction } from "@remix-run/node";
 import { useLocation, useNavigate } from "@remix-run/react";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { GameActions } from "~/store/gameSlice";
 import Logo from "~/ui/menu_ui/logo";
 import soundPlayer from "~/utils/soundPlayer";
 
@@ -14,10 +16,12 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (location.pathname === "/") {
-      soundPlayer.StopSound("gameplay","start");
+      soundPlayer.StopAllSounds()
+      dispatch(GameActions.gameReset());
     }
   }, [location.pathname]);
 
@@ -30,12 +34,12 @@ export default function Index() {
     soundPlayer.PlaySound({ folder: "ui", audio: "select" });
   };
   return (
-    <main className="relative flex flex-col items-center pt-20 h-screen text-white bg-slate-950">
+    <main className="relative flex flex-col items-center justify-between h-screen py-4 pt-20 text-white bg-slate-950">
       <Logo />
       <ul className="flex flex-col items-center justify-center gap-4 mt-10">
         <li
           onMouseEnter={hoverSound}
-          className="group flex items-center justify-center gap-2 text-lg"
+          className="flex items-center justify-center gap-2 text-lg group"
         >
           <span className="opacity-0 group-hover:opacity-100">&gt;</span>
           <button
@@ -47,7 +51,7 @@ export default function Index() {
         </li>
         <li
           onMouseEnter={hoverSound}
-          className="group flex items-center justify-center gap-2 text-lg"
+          className="flex items-center justify-center gap-2 text-lg group"
         >
           <span className="opacity-0 group-hover:opacity-100">&gt;</span>
           <button
@@ -59,7 +63,7 @@ export default function Index() {
         </li>
         <li
           onMouseEnter={hoverSound}
-          className="group flex items-center justify-center gap-2 text-lg"
+          className="flex items-center justify-center gap-2 text-lg group"
         >
           <span className="opacity-0 group-hover:opacity-100">&gt;</span>
           <button
